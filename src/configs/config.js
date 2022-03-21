@@ -4,10 +4,11 @@ module.exports = {
     WSDL_CONSULTAS_GENERALES: "https://serviciogads.ant.gob.ec:7081/WSConsultasGenerales/WSConsultasGenerales?WSDL",
     WSDL_RTV: "https://serviciogads.ant.gob.ec:7081/WSRtv/WSRTV?wsdl",
     WSDL_MATRICULACION: "https://serviciogads.ant.gob.ec:7081/WSMatriculacion/WSMatriculacion?WSDL",
-    PORT: "5000",
+    PORT: "5001",
     ID_EMPRESA: "50",
     SECRET: "amt2020",
     PASSWORD: "$A4T201%", //para ANT
     USERNAME: "AMTQUITMAT", //para ANT
-    TOKENTIME: 120 * 60, // in seconds
+    TOKENTIME: '4h', // tiempo en horas
+    JWT_KEY: 'haJSHdjksh!!1i27@askjdhm2nasa21A'
 }
