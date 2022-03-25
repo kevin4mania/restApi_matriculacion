@@ -4,7 +4,7 @@ const strongSoap = require('strong-soap').soap
 const consultar = async(req, res) => {
 
     const { placa } = req.params;
-    const url = config.WSDL_INFRACCIONES;
+    const url = config.WSDL_CONSULTAS_GENERALES;
     const requestArgs = { placa }
 
     const soapHeader = {
