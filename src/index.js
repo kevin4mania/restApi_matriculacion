@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors')
 require('dotenv').config();
 //const config = require('./configs/config')
 
@@ -13,6 +14,7 @@ const app = express();
 
 // Lectura y parseo del Body
 app.use(express.json());
+app.use(cors())
 
 
 // Node Server
@@ -21,16 +23,19 @@ module.exports.io = require('socket.io')(server);
 require('./sockets/socket');
 
 // Path público
-const publicPath = path.resolve(__dirname, 'public');
-app.use(express.static(publicPath));
+// const publicPath = path.resolve(__dirname, 'public');
+// app.use(express.static(publicPath));
 
 // Mis Rutas
 app.use('/api/matriculacion', require('./routes/ruta'));
+app.use('/api/login', require('./routes/auth'));
+app.use('/api/generales', require('./routes/generales'));
+
+
 
 //settings
 //app.set('port', process.env.PORT || config.PORT);
 app.set('json spaces', 2)
-app.use(cors())
 
 
 

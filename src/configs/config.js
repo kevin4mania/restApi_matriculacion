@@ -11,4 +11,5 @@ module.exports = {
     USERNAME: "AMTQUITMAT", //para ANT
     TOKENTIME: '4h', // tiempo en horas
     JWT_KEY: 'haJSHdjksh!!1i27@askjdhm2nasa21A'
+
 }

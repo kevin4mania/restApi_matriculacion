@@ -1,7 +1,7 @@
 const config = require('../configs/config');
 const strongSoap = require('strong-soap').soap
 
-const matriculacion = async(req, res) => {
+const consultarVehiculo = async(req, res) => {
     console.log("Vehiculo");
     const { placa } = req.params;
     const url = config.WSDL_INFRACCIONES
@@ -37,5 +37,5 @@ const matriculacion = async(req, res) => {
 
 
 module.exports = {
-    matriculacion
+    consultarVehiculo
 }
