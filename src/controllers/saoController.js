@@ -8,11 +8,6 @@ const consultarInformacionVehiculo = async(req, res) => {
     const url = config.WSDL_SOAP;
     const requestArgs = { tipo, valor };
 
-    const soapHeader = {
-        username: config.USERNAME,
-        password: config.PASSWORD,
-    };
-
     const options = {};
     // console.log(requestArgs);
     strongSoap.createClient(url, options, function(err, client) {
@@ -32,8 +27,7 @@ const consultarInformacionVehiculo = async(req, res) => {
                     }
                 }
             },
-            null,
-            soapHeader
+            null
         );
     });
 };

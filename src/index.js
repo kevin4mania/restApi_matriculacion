@@ -29,10 +29,11 @@ require("./sockets/socket");
 // app.use(express.static(publicPath));
 
 // Mis Rutas
-app.use("/api/matriculacion", require("./routes/ruta"));
+//app.use("/api/matriculacion", require("./routes/ruta"));
 app.use("/api/login", require("./routes/auth"));
 app.use("/api/generales", require("./routes/generalesRoutes"));
-app.use("/api/soap", require("./routes/soapRoutes"));
+app.use("/api/sao", require("./routes/saoRoutes"));
+//app.use("/api/version", require("./routes/version"));
 
 //settings
 //app.set('port', process.env.PORT || config.PORT);
