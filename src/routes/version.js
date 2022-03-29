@@ -1,6 +1,13 @@
-require("dotenv").config();
-const express = require("express");
-const path = require("path");
-const cors = require("cors");
+const { check } = require("express-validator");
+const { Router } = require("express");
+const { validarJWT } = require("../middlewares/validarjwt");
 
-module.exports = version;
+const router = Router();
+const { version, metodosConacceso } = require("../models/version");
+
+
+router.get('/', validarJWT, version);
+
+router.get("/metodos/:idUsuario", validarJWT, metodosConacceso);
+
+module.exports = router;

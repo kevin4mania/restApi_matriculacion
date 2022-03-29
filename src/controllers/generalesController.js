@@ -7,7 +7,7 @@ const consultarVehiculo = async(req, res) => {
     // PLK3492
     // PAB3359
     const { placa } = req.params;
-    const url = config.WSDL_CONSULTAS_GENERALES;
+    const url = config.WSDL_INFRACCIONES;
     const requestArgs = { placa };
 
     const soapHeader = {
@@ -45,7 +45,7 @@ const consultarBloqueos = async(req, res) => {
     // LBA8869
     // GCK0432
     const { placa } = req.params;
-    const url = config.WSDL_CONSULTAS_GENERALES;
+    const url = config.WSDL_INFRACCIONES;
     const requestArgs = { placa };
 
     const soapHeader = {
@@ -90,7 +90,7 @@ const consultarHistorial = async(req, res) => {
     // ABS0279
     // XBY0821
     const { placa } = req.params;
-    const url = config.WSDL_CONSULTAS_GENERALES;
+    const url = config.WSDL_INFRACCIONES;
     const requestArgs = { placa };
     const soapHeader = {
         username: config.USERNAME,
@@ -128,7 +128,7 @@ const consultarLicencia = async(req, res) => {
     // 1717422321
     // AXISANT
     const { identificacion, canal, usuario } = req.body;
-    const url = config.WSDL_CONSULTAS_GENERALES;
+    const url = config.WSDL_INFRACCIONES;
     const requestArgs = { identificacion, canal, usuario };
     const soapHeader = {
         username: config.USERNAME,
@@ -170,7 +170,7 @@ const consultarDeudas = async(req, res) => {
     // 0201443678
     // PBF6660
     const { tipoIdentificacion, identificacion, placa } = req.body;
-    const url = config.WSDL_CONSULTAS_GENERALES;
+    const url = config.WSDL_INFRACCIONES;
     const requestArgs = { tipoIdentificacion, identificacion, placa };
     const soapHeader = {
         username: config.USERNAME,

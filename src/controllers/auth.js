@@ -2,12 +2,14 @@ const { response } = require("express");
 const bcrypt = require("bcryptjs");
 
 const Usuario = require("../models/usuario");
+const Metodo = require("../models/metodos");
 const { generarJWT } = require("../helpers/jwt");
-const usuario = require("../models/usuario");
+// const usuario = require("../models/usuario");
+const { Types } = require("mongoose");
 
 const crearUsuario = async(req, res = response) => {
     const { email, password } = req.body;
-    console.log("MEtodo->", req.body);
+    // console.log("MEtodo->", req.body);
     try {
         const existeEmail = await Usuario.findOne({ email });
         if (existeEmail) {
@@ -80,6 +82,32 @@ const login = async(req, res = response) => {
     }
 };
 
+const ingresaMetodosUsuario = async(req, res = response) => {
+    const { idUsuario, nombreMetodo } = req.body;
+    try {
+        const usuarioDB = await Usuario.findOne({ _id: Types.ObjectId(idUsuario) });
+        if (!usuarioDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: "Usuario no encontrado",
+            });
+        }
+        const metodo = new Metodo(req.body);
+
+        await metodo.save();
+        res.json({
+            ok: true,
+            metodo,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: "Hable con el administrador",
+        });
+    }
+};
+
 const renewToken = async(req, res = response) => {
     const uid = req.uid;
 
@@ -100,4 +128,5 @@ module.exports = {
     crearUsuario,
     login,
     renewToken,
+    ingresaMetodosUsuario
 };

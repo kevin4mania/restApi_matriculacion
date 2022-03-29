@@ -10,7 +10,7 @@ module.exports = {
     SECRET: "amt2020",
     PASSWORD: "$A4T201%", //para ANT
     USERNAME: "AMTQUITMAT", //para ANT
-    TOKENTIME: '4h', // tiempo en horas
-    JWT_KEY: 'haJSHdjksh!!1i27@askjdhm2nasa21A'
-
-}
+    // TOKENTIME: '4h', // tiempo en horas
+    TOKENTIME: 60 * 60 * 24,
+    JWT_KEY: "haJSHdjksh!!1i27@askjdhm2nasa21A",
+};

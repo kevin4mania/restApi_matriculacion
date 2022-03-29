@@ -33,7 +33,7 @@ require("./sockets/socket");
 app.use("/api/login", require("./routes/auth"));
 app.use("/api/generales", require("./routes/generalesRoutes"));
 app.use("/api/sao", require("./routes/saoRoutes"));
-//app.use("/api/version", require("./routes/version"));
+app.use("/api/version", require("./routes/version"));
 
 //settings
 //app.set('port', process.env.PORT || config.PORT);
@@ -43,3 +43,8 @@ server.listen(process.env.PORT, (err) => {
     if (err) throw new Error(err);
     console.log("Servidor corriendo en puerto", process.env.PORT);
 });
+
+/**
+ * !Hacer lo del acceso de metodos dependiendo del usuario
+ * ?ver como mandar el token por header en la peticion de angular
+ */
