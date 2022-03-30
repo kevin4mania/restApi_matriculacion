@@ -45,6 +45,6 @@ server.listen(process.env.PORT, (err) => {
 });
 
 /**
- * !Hacer lo del acceso de metodos dependiendo del usuario
  * ?ver como mandar el token por header en la peticion de angular
+ * 
  */

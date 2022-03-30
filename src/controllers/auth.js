@@ -108,6 +108,28 @@ const ingresaMetodosUsuario = async(req, res = response) => {
     }
 };
 
+const consultarUsuarios = async(req, res = response) => {
+    try {
+        const usuarioDB = await Usuario.find();
+        if (!usuarioDB || usuarioDB.length == 0) {
+            return res.status(404).json({
+                ok: false,
+                msg: "No existen usuarios",
+            });
+        }
+        res.json({
+            ok: true,
+            usuarios: usuarioDB,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: "Hable con el administrador",
+        });
+    }
+}
+
 const renewToken = async(req, res = response) => {
     const uid = req.uid;
 
@@ -128,5 +150,6 @@ module.exports = {
     crearUsuario,
     login,
     renewToken,
-    ingresaMetodosUsuario
+    ingresaMetodosUsuario,
+    consultarUsuarios
 };
