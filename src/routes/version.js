@@ -6,7 +6,7 @@ const router = Router();
 const { version, metodosConacceso, buscaMetodosConAccesoID } = require("../models/version");
 const { validaAccesoUsuario } = require("../middlewares/validaAccesoUsuario");
 
-router.get("/", validarJWT, version);
+router.get("/", version);
 router.get("/metodos", validarJWT, metodosConacceso);
 router.get("/metodosID/:IdUsuario", [validarJWT, validaAccesoUsuario], buscaMetodosConAccesoID);
 
