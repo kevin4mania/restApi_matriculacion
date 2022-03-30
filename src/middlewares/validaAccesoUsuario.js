@@ -3,8 +3,6 @@ const { Types } = require("mongoose");
 
 const validaAccesoUsuario = async(req, res, next) => {
     try {
-        // console.log(req);
-        // const idUsuario = req.header("idUsuario");
         const pathURL = req.route.path.split(":");
         const baseURL = req.baseUrl;
         const usuarioREQ = req.usuario;
@@ -14,18 +12,7 @@ const validaAccesoUsuario = async(req, res, next) => {
         } else {
             nombreMetodo = baseURL + pathURL[0];
         }
-        /*         
-                console.log(`Nombre metodo:${nombreMetodo} - typo:${typeof nombreMetodo} `);
-                console.log(`Id usuario:${idUsuario} - typo:${typeof idUsuario}`);
-                if (!idUsuario) {
-                    return res.status(401).json({
-                        ok: false,
-                        msg: "No hay usuario en la peticion",
-                    });
-                }
-         */
-        // {idUsuario:ObjectId('6241e7696be7e92440b3746b'),nombreMetodo:'/api/generales/consultarLicencia',estado:true}
-        // { idUsuario: Types.ObjectId(idUsuario), nombreMetodo, estado: true }
+        console.log("valida->", { idUsuario: Types.ObjectId(usuarioREQ), nombreMetodo, estado: true });
         const metodoBDD = await Metodo.find({ idUsuario: Types.ObjectId(usuarioREQ), nombreMetodo, estado: true });
         console.log("Resultado de la bsuqueda en la base-->", metodoBDD);
 

@@ -28,7 +28,7 @@ const crearUsuario = async(req, res = response) => {
         await usuario.save();
 
         // Generar mi JWT
-        const token = await generarJWT(usuario.id);
+        const token = await generarJWT(usuario);
 
         res.json({
             ok: true,
@@ -46,7 +46,6 @@ const crearUsuario = async(req, res = response) => {
 
 const login = async(req, res = response) => {
     const { email, password } = req.body;
-
     try {
         const usuarioDB = await Usuario.findOne({ email });
         if (!usuarioDB) {
@@ -55,8 +54,12 @@ const login = async(req, res = response) => {
                 msg: "Email no encontrado",
             });
         }
-
-        // Validar el password
+        if (!usuarioDB.online) {
+            return res.status(404).json({
+                ok: false,
+                msg: "Usuario deshabilitado",
+            });
+        }
         const validPassword = bcrypt.compareSync(password, usuarioDB.password);
         if (!validPassword) {
             return res.status(400).json({
@@ -64,9 +67,7 @@ const login = async(req, res = response) => {
                 msg: "La contraseña no es valida",
             });
         }
-
-        // Generar el JWT
-        const token = await generarJWT(usuarioDB.id);
+        const token = await generarJWT(usuarioDB);
 
         res.json({
             ok: true,
@@ -86,12 +87,21 @@ const ingresaMetodosUsuario = async(req, res = response) => {
     const { idUsuario, nombreMetodo } = req.body;
     try {
         const usuarioDB = await Usuario.findOne({ _id: Types.ObjectId(idUsuario) });
-        if (!usuarioDB) {
+        if (!usuarioDB || usuarioDB.length == 0) {
             return res.status(404).json({
                 ok: false,
                 msg: "Usuario no encontrado",
             });
         }
+        const metodosBDD = await Metodo.find({ idUsuario: Types.ObjectId(idUsuario), nombreMetodo });
+        console.log(`Respuesta metodos:${metodosBDD}`);
+        if (metodosBDD || metodosBDD.length >= 1) {
+            return res.status(400).json({
+                ok: false,
+                msg: "El usuario ya tiene asignado el metodo",
+            });
+        }
+
         const metodo = new Metodo(req.body);
 
         await metodo.save();
