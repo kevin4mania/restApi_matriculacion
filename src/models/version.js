@@ -13,10 +13,12 @@ const version = async(req, res) => {
 const metodosConacceso = async(req, res) => {
     try {
         const { idUsuario } = req.params;
-        console.log("IdUsuario--><<<", idUsuario);
-        console.log({ idUsuario: Types.ObjectId(idUsuario), estado: true });
-        const metodoBDD = await Metodo.find({ idUsuario: Types.ObjectId(idUsuario), estado: true });
-        console.log("Resultado de la bsuqueda en la base-->", metodoBDD);
+        const { usuarioREQ } = req.usuario;
+        // console.log(req);
+        console.log("IdUsuario--><<<", usuarioREQ);
+        // console.log({ idUsuario: Types.ObjectId(idUsuario), estado: true });
+        const metodoBDD = await Metodo.find({ idUsuario: Types.ObjectId(usuarioREQ), estado: true });
+        // console.log("Resultado de la bsuqueda en la base-->", metodoBDD);
 
         if (!metodoBDD || metodoBDD.length == 0) {
             return res.status(404).json({

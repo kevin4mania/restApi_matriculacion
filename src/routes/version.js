@@ -8,6 +8,6 @@ const { version, metodosConacceso } = require("../models/version");
 
 router.get('/', validarJWT, version);
 
-router.get("/metodos/:idUsuario", validarJWT, metodosConacceso);
+router.get("/metodos", validarJWT, metodosConacceso);
 
 module.exports = router;
