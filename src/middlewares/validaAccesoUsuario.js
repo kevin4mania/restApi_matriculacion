@@ -12,9 +12,9 @@ const validaAccesoUsuario = async(req, res, next) => {
         } else {
             nombreMetodo = baseURL + pathURL[0];
         }
-        console.log("valida->", { idUsuario: Types.ObjectId(usuarioREQ), nombreMetodo, estado: true });
+        console.log("Info del require del usuario->", { idUsuario: Types.ObjectId(usuarioREQ), nombreMetodo, estado: true });
         const metodoBDD = await Metodo.find({ idUsuario: Types.ObjectId(usuarioREQ), nombreMetodo, estado: true });
-        console.log("Resultado de la bsuqueda en la base-->", metodoBDD);
+        console.log("Busqueda de la bdd si tiene acceso-->", metodoBDD);
 
         if (!metodoBDD || metodoBDD.length == 0) {
             return res.status(404).json({

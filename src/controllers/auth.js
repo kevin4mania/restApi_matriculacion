@@ -94,20 +94,20 @@ const ingresaMetodosUsuario = async(req, res = response) => {
             });
         }
         const metodosBDD = await Metodo.find({ idUsuario: Types.ObjectId(idUsuario), nombreMetodo });
-        console.log(`Respuesta metodos:${metodosBDD}`);
-        if (metodosBDD || metodosBDD.length >= 1) {
-            return res.status(400).json({
-                ok: false,
-                msg: "El usuario ya tiene asignado el metodo",
+        // console.log(`Verifica si tiene ya el metodo registrado:${metodosBDD}`);
+        console.log("USER:->", usuarioDB);
+        if (!metodosBDD || metodosBDD.length == 0) {
+            const metodo = new Metodo(req.body);
+            await metodo.save();
+            return res.json({
+                ok: true,
+                msg: `Se consedio acceso a ${usuarioDB.nombre} al metodo ${nombreMetodo}`,
+                metodo,
             });
         }
-
-        const metodo = new Metodo(req.body);
-
-        await metodo.save();
-        res.json({
-            ok: true,
-            metodo,
+        res.status(400).json({
+            ok: false,
+            msg: `El usuario ${usuarioDB.nombre} ya tiene asignado el metodo:${nombreMetodo}`,
         });
     } catch (error) {
         console.log(error);
@@ -138,7 +138,7 @@ const consultarUsuarios = async(req, res = response) => {
             msg: "Hable con el administrador",
         });
     }
-}
+};
 
 const renewToken = async(req, res = response) => {
     const uid = req.uid;
@@ -161,5 +161,5 @@ module.exports = {
     login,
     renewToken,
     ingresaMetodosUsuario,
-    consultarUsuarios
+    consultarUsuarios,
 };
