@@ -11,7 +11,7 @@ const validarJWT = (req, res, next) => {
     }
     try {
         const { usuario } = jwt.verify(token, config.JWT_KEY);
-        req.usuario = usuario.uid;
+        req.usuario = usuario.id;
         // const token = jwt.verify(token, config.JWT_KEY);
         // console.log("TOKEN ***>", jwt.verify(token, config.JWT_KEY));
         next();

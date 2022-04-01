@@ -1,10 +1,11 @@
 const { response } = require("express");
 const bcrypt = require("bcryptjs");
+const _ = require('underscore')
 
 const Usuario = require("../models/usuario");
 const Metodo = require("../models/metodos");
 const { generarJWT } = require("../helpers/jwt");
-// const usuario = require("../models/usuario");
+
 const { Types } = require("mongoose");
 
 const crearUsuario = async(req, res = response) => {
@@ -36,7 +37,6 @@ const crearUsuario = async(req, res = response) => {
             token,
         });
     } catch (error) {
-        console.log(error);
         res.status(500).json({
             ok: false,
             msg: "Hable con el administrador",
@@ -51,13 +51,13 @@ const login = async(req, res = response) => {
         if (!usuarioDB) {
             return res.status(404).json({
                 ok: false,
-                msg: "Email no encontrado",
+                msg: "Credenciales incorrectas",
             });
         }
         if (!usuarioDB.online) {
             return res.status(404).json({
                 ok: false,
-                msg: "Usuario deshabilitado",
+                msg: `El usuario ${usuarioDB.nombre} se encuentra inactivo`
             });
         }
         const validPassword = bcrypt.compareSync(password, usuarioDB.password);
@@ -73,41 +73,6 @@ const login = async(req, res = response) => {
             ok: true,
             usuario: usuarioDB,
             token,
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            ok: false,
-            msg: "Hable con el administrador",
-        });
-    }
-};
-
-const ingresaMetodosUsuario = async(req, res = response) => {
-    const { idUsuario, nombreMetodo } = req.body;
-    try {
-        const usuarioDB = await Usuario.findOne({ _id: Types.ObjectId(idUsuario) });
-        if (!usuarioDB || usuarioDB.length == 0) {
-            return res.status(404).json({
-                ok: false,
-                msg: "Usuario no encontrado",
-            });
-        }
-        const metodosBDD = await Metodo.find({ idUsuario: Types.ObjectId(idUsuario), nombreMetodo });
-        // console.log(`Verifica si tiene ya el metodo registrado:${metodosBDD}`);
-        console.log("USER:->", usuarioDB);
-        if (!metodosBDD || metodosBDD.length == 0) {
-            const metodo = new Metodo(req.body);
-            await metodo.save();
-            return res.json({
-                ok: true,
-                msg: `Se consedio acceso a ${usuarioDB.nombre} al metodo ${nombreMetodo}`,
-                metodo,
-            });
-        }
-        res.status(400).json({
-            ok: false,
-            msg: `El usuario ${usuarioDB.nombre} ya tiene asignado el metodo:${nombreMetodo}`,
         });
     } catch (error) {
         console.log(error);
@@ -140,6 +105,52 @@ const consultarUsuarios = async(req, res = response) => {
     }
 };
 
+const actualizarEstadoUsuario = async(req, res = response) => {
+    const { idUsuario } = req.body;
+    try {
+        let data = req.body;
+        const usuarioDB = await Usuario.findOne({ _id: Types.ObjectId(idUsuario) });
+        if (!usuarioDB || usuarioDB.length == 0) {
+            return res.status(404).json({
+                ok: false,
+                msg: "Usuario no encontrado",
+            });
+        }
+        // console.log("Contraseña que llega-/>", data.password);
+        if (data.password != undefined) {
+            const salt = bcrypt.genSaltSync();
+            data.password = bcrypt.hashSync(req.body.password, salt);
+        }
+
+        //**especifico los campos que voy actualizar */
+        let body = _.pick(data, ['nombre', 'email', 'password', 'online']);
+        //**Lo que no quiero que se actualice elimino */
+        delete body.email;
+
+        const userUpdateBDD = await Usuario.findByIdAndUpdate(idUsuario, body, { new: true, runValidators: true, context: 'query' });
+        console.log("actualizacion del usuario", userUpdateBDD);
+        if (!userUpdateBDD || userUpdateBDD.length == 0) {
+            return res.status(400).json({
+                ok: false,
+                msg: "Ocurrio un error al guardar en la base",
+            });
+        }
+
+        res.json({
+            ok: true,
+            msg: `Se actualizo los datos del usuario`,
+            userUpdateBDD,
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Hable con el administrador",
+        });
+    }
+}
+
+/* 
 const renewToken = async(req, res = response) => {
     const uid = req.uid;
 
@@ -155,11 +166,11 @@ const renewToken = async(req, res = response) => {
         token,
     });
 };
-
+ */
 module.exports = {
     crearUsuario,
     login,
-    renewToken,
-    ingresaMetodosUsuario,
+    // renewToken,
     consultarUsuarios,
+    actualizarEstadoUsuario
 };

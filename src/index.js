@@ -30,10 +30,11 @@ require("./sockets/socket");
 
 // Mis Rutas
 //app.use("/api/matriculacion", require("./routes/ruta"));
-app.use("/api/login", require("./routes/auth"));
+app.use("/api/login", require("./routes/userRoutes"));
 app.use("/api/generales", require("./routes/generalesRoutes"));
 app.use("/api/sao", require("./routes/saoRoutes"));
-app.use("/api/informacion", require("./routes/version"));
+app.use("/api/informacion", require("./routes/informacionRoutes"));
+app.use("/api/metodos", require("./routes/metodosRoutes"));
 
 //settings
 //app.set('port', process.env.PORT || config.PORT);
@@ -49,6 +50,6 @@ server.listen(process.env.PORT, (err) => {
  * !VALIDAR AL MOMENTO DE DAR ACCESO A LOS METYODOS QUE SI EL METODO YA ESTA ASIGNADO AL USUARIO NO DEJE AGREGAR NUEVAMENTE**YA
  * !arreglar lo del estado del usuario **YA
  * ?hacer metodo para listar todos los metodos
- * 
- * 
+ *
+ *
  */

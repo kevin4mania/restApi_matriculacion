@@ -1,6 +1,7 @@
 const { Types } = require("mongoose");
-const Metodo = require("./metodos");
-const Usuario = require("./usuario");
+
+const Metodo = require("../models/metodos");
+const Usuario = require("../models/usuario");
 
 const version = async(req, res) => {
     const datos = {
@@ -87,7 +88,7 @@ const descripccionMetodos = async(req, res) => {
             descripcion: "? (requiere:[token,acceso] para usar)",
             URL: "/api/generales/consultarDeudas",
         },
-        /**Metodos SAO */
+        //**Metodos SAO */
         {
             nombre: "consultar Informacion Vehiculo",
             descripcion: "? (requiere:[token,acceso] para usar)",
@@ -102,7 +103,7 @@ const descripccionMetodos = async(req, res) => {
     res.json(infMetodos);
 };
 
-const metodosConacceso = async(req, res) => {
+const accesoMetodos = async(req, res) => {
     try {
         // const { idUsuario } = req.params;
         const usuarioREQ = req.usuario;
@@ -137,81 +138,8 @@ const metodosConacceso = async(req, res) => {
     }
 };
 
-const buscaMetodosConAccesoID = async(req, res) => {
-    try {
-        const { IdUsuario } = req.params;
-        const usuarioBDD = await Usuario.find({ _id: Types.ObjectId(IdUsuario) });
-        const metodoBDD = await Metodo.find({
-            idUsuario: Types.ObjectId(IdUsuario),
-            estado: true,
-        });
-        if (!metodoBDD || metodoBDD.length == 0) {
-            return res.status(404).json({
-                ok: false,
-                usuario: { nombre: usuarioBDD[0].nombre, email: usuarioBDD[0].email },
-                msg: "Usuario no tiene metodos asignados",
-            });
-        }
-        res.json({
-            ok: true,
-            usuario: { nombre: usuarioBDD[0].nombre, email: usuarioBDD[0].email },
-            metodosAcceso: metodoBDD,
-        });
-    } catch (error) {
-        return res.status(403).json({
-            msg: "0010",
-            ok: false,
-            msg: "Error hable con el administrador",
-            error,
-        });
-    }
-};
-
-const buscaTodosUsuariosMetodos = async(req, res) => {
-    try {
-        const usuarioREQ = req.usuario;
-        const metodoBDD = await Metodo.find();
-        if (!metodoBDD || metodoBDD.length == 0) {
-            return res.status(404).json({
-                ok: false,
-                msg: "No existen metodos",
-            });
-        }
-        const agrupado = await Metodo.aggregate(
-            [{
-                $group: {
-                    _id: "$idUsuario",
-                    metodos: {
-                        $addToSet: { nombre: "$nombreMetodo", esatdo: "$estado" },
-                    },
-                },
-            }, ],
-            (err) => {
-                console.log("error:", err);
-            }
-        );
-        console.log("Agrupado-->", agrupado);
-        for (let obj of agrupado) {
-            const nombreUsuario = await Usuario.find({ _id: obj._id });
-            obj.nombre = nombreUsuario[0].nombre;
-        }
-        res.json({
-            ok: true,
-            respuesta: agrupado,
-        });
-    } catch (error) {
-        return res.status(403).json({
-            msg: "0010",
-            ok: false,
-            msg: "Error hable con el administrador",
-        });
-    }
-};
-
 module.exports = {
     version,
-    metodosConacceso,
-    buscaMetodosConAccesoID,
-    buscaTodosUsuariosMetodos,
     descripccionMetodos,
+    accesoMetodos
 };

@@ -7,7 +7,7 @@ const generarJWT = (usuario) => {
     return new Promise((resolve, reject) => {
 
         const payload = { usuario };
-        console.log("GENERAR TT->", payload);
+        // console.log("GENERAR TT->", payload);
         jwt.sign(payload, config.JWT_KEY, {
             expiresIn: config.TOKENTIME,
         }, (err, token) => {
