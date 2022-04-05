@@ -10,7 +10,8 @@ const {
     actualizarDatosVehPro,
     consultarTransPla,
     validarBloqueosProc,
-    consultarSolPlaca
+    consultarSolPlaca,
+    actualizarBeneficiario
 } = require("../controllers/matriculacionController");
 
 const router = Router();
@@ -72,5 +73,15 @@ router.post(
     ],
     validarBloqueosProc
 );
+
+router.post(
+    "/actualizarBeneficiario", [
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    actualizarBeneficiario
+);
+
 
 module.exports = router;

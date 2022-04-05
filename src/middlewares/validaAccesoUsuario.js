@@ -1,5 +1,6 @@
-const Metodo = require("../models/metodos");
 const { Types } = require("mongoose");
+const Metodo = require("../models/metodos");
+const DescripcionMetodos = require("../models/registroMetodos");
 
 const validaAccesoUsuario = async(req, res, next) => {
     try {
@@ -14,8 +15,9 @@ const validaAccesoUsuario = async(req, res, next) => {
         }
         // console.log("Info del require del usuario->", { idUsuario: Types.ObjectId(usuarioREQ), nombreMetodo, estado: true });
         const metodoBDD = await Metodo.find({ idUsuario: Types.ObjectId(usuarioREQ), nombreMetodo, estado: true });
-        console.log(`Nombre metodo que llega en JWT:${nombreMetodo} usuario:${usuarioREQ}`);
-        console.log("Busqueda de la bdd si tiene acceso-->", metodoBDD);
+        // console.log(`Nombre metodo que llega en JWT:${nombreMetodo} usuario:${usuarioREQ}`);
+        // console.log("Busqueda de la bdd si tiene acceso-->", metodoBDD);
+        // const descripcionMetodoBDD= await DescripcionMetodos.findOne();
 
         if (!metodoBDD || metodoBDD.length == 0) {
             return res.status(404).json({

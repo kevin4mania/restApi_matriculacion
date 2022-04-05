@@ -14,7 +14,7 @@ const crearUsuario = async(req, res = response) => {
     try {
         const existeEmail = await Usuario.findOne({ email });
         if (existeEmail) {
-            return res.status(400).json({
+            return res.status(200).json({
                 ok: false,
                 msg: "El correo ya está registrado",
             });
@@ -54,10 +54,11 @@ const login = async(req, res = response) => {
                 msg: "Credenciales incorrectas",
             });
         }
+        console.log(usuarioDB);
         if (!usuarioDB.online) {
             return res.status(404).json({
                 ok: false,
-                msg: `El usuario ${usuarioDB.nombre} se encuentra inactivo`
+                msg: `El usuario ${usuarioDB.email} se encuentra inactivo`
             });
         }
         const validPassword = bcrypt.compareSync(password, usuarioDB.password);
@@ -128,7 +129,7 @@ const actualizarEstadoUsuario = async(req, res = response) => {
         delete body.email;
 
         const userUpdateBDD = await Usuario.findByIdAndUpdate(idUsuario, body, { new: true, runValidators: true, context: 'query' });
-        console.log("actualizacion del usuario", userUpdateBDD);
+        // console.log("actualizacion del usuario", userUpdateBDD);
         if (!userUpdateBDD || userUpdateBDD.length == 0) {
             return res.status(400).json({
                 ok: false,

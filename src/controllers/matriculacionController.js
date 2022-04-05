@@ -218,6 +218,42 @@ const validarBloqueosProc = async(req, res) => {
     });
 };
 
+const actualizarBeneficiario = async(req, res) => {
+    const url = config.WSDL_INFRACCIONES;
+    const requestArgs = req.body;
+
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+
+    const options = {};
+
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["actualizarBeneficiario"];
+
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["codError"] == 0) {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"]["resultado"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+
 module.exports = {
     matriculacion,
     consultarVehiculoNuevo,
@@ -225,5 +261,6 @@ module.exports = {
     consultarTransPla,
     consultarSolPlaca,
     validarBloqueosProc,
+    actualizarBeneficiario
 
 };
