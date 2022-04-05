@@ -21,13 +21,13 @@ const consultaMetodosPorUsuario = async(req, res) => {
         if (!metodoBDD || metodoBDD.length == 0) {
             return res.status(404).json({
                 ok: false,
-                usuario: { nombre: usuarioBDD[0].nombre, email: usuarioBDD[0].email },
+                usuario: usuarioBDD[0].email,
                 msg: "Usuario no tiene metodos asignados",
             });
         }
         res.json({
             ok: true,
-            usuario: { nombre: usuarioBDD[0].nombre, email: usuarioBDD[0].email },
+            usuario: usuarioBDD[0].email,
             metodosAcceso: metodoBDD,
         });
     } catch (error) {
@@ -65,7 +65,7 @@ const consultaMetodosTodosUsuarios = async(req, res) => {
         console.log("Agrupado-->", agrupado);
         for (let obj of agrupado) {
             const nombreUsuario = await Usuario.find({ _id: obj._id });
-            obj.nombre = nombreUsuario[0].nombre;
+            obj.nombre = nombreUsuario[0].email;
         }
         res.json({
             ok: true,
@@ -107,13 +107,13 @@ const darPermisoAccesoMetodo = async(req, res = response) => {
             await metodo.save();
             return res.json({
                 ok: true,
-                msg: `Se concedió acceso a ${usuarioDB.nombre} a la ruta ${nombreMetodo}`,
+                msg: `Se concedió acceso a ${usuarioDB.email} a la ruta ${nombreMetodo}`,
                 metodo,
             });
         }
         res.status(400).json({
             ok: false,
-            msg: `El usuario ${usuarioDB.nombre} ya tiene asignado el metodo:${nombreMetodo}`,
+            msg: `El usuario ${usuarioDB.email} ya tiene asignado el metodo:${nombreMetodo}`,
         });
     } catch (error) {
         // console.log(error);

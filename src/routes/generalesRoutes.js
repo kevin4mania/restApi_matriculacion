@@ -1,15 +1,3 @@
-/**
- * TODO:hacer los metodos
- * *Consultar licencia**
- * *Consultar historial**
- * *Consultar deudas
- * *Consultar bloqueos**
- * *Consultar vehiculo**
- *
- * ?WSDL_MATRICULACION
- *
- */
-
 const { check } = require("express-validator");
 
 const { Router } = require("express");

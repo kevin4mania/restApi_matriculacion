@@ -1,11 +1,8 @@
 const config = require("../configs/config");
 const strongSoap = require("strong-soap").soap;
 
-const consultarVehiculo = async(req, res) => {
+const matriculacion = async(req, res) => {
     // console.log("Vehiculo");
-    // PCS5742
-    // PLK3492
-    // PAB3359
     const { placa } = req.params;
     const url = config.WSDL_INFRACCIONES;
     const requestArgs = { placa };
@@ -24,142 +21,8 @@ const consultarVehiculo = async(req, res) => {
             requestArgs,
             function(err, result, envelope, soapHeader) {
                 if (err) {
-                    res.json({ ok: false, codRetorno: "0010", retorno: err });
-                } else {
-                    if (result["return"]["resultado"]["codError"] == 0) {
-                        res.json({
-                            ok: true,
-                            codRetorno: "0001",
-                            retorno: result["return"],
-                        });
-                    } else {
-                        res.json({
-                            ok: false,
-                            codRetorno: "0010",
-                            retorno: result["return"]["resultado"],
-                        });
-                    }
-                }
-            },
-            null,
-            soapHeader
-        );
-    });
-};
-
-const consultarBloqueos = async(req, res) => {
-    // console.log("Bloqueo");
-    // KMM0202
-    // LBA8869
-    // GCK0432
-    const { placa } = req.params;
-    const url = config.WSDL_INFRACCIONES;
-    const requestArgs = { placa };
-
-    const soapHeader = {
-        username: config.USERNAME,
-        password: config.PASSWORD,
-    };
-
-    const options = {};
-
-    strongSoap.createClient(url, options, function(err, client) {
-        const method = client["consultarBloqueos"];
-
-        method(
-            requestArgs,
-            function(err, result, envelope, soapHeader) {
-                if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    if (result["return"]["resultado"] == undefined) {
-                        res.json({ ok: false, codRetorno: "0001", retorno: result["return"] });
-                    } else {
-                        if (result["return"]["resultado"]["codError"] == 0) {
-                            res.json({ ok: false, codRetorno: "0001", retorno: result["return"] });
-                        } else {
-                            res.json({
-                                ok: true,
-                                codRetorno: "0010",
-                                retorno: result["return"]["resultado"],
-                            });
-                        }
-                    }
-                }
-            },
-            null,
-            soapHeader
-        );
-    });
-};
-
-const consultarHistorial = async(req, res) => {
-    // console.log("Historial");
-    // PCS5742
-    // ABS0279
-    // XBY0821
-    const { placa } = req.params;
-    const url = config.WSDL_INFRACCIONES;
-    const requestArgs = { placa };
-    const soapHeader = {
-        username: config.USERNAME,
-        password: config.PASSWORD,
-    };
-    const options = {};
-    strongSoap.createClient(url, options, function(err, client) {
-        const method = client["consultarHistorial"];
-        method(
-            requestArgs,
-            function(err, result, envelope, soapHeader) {
-                if (err) {
-                    res.json({ codRetorno: "0010", retorno: err });
-                } else {
-                    // console.log("Resultado", result);
-                    if (result["return"]["resultado"] == 0) {
-                        res.json({
-                            codRetorno: "0001",
-                            retorno: result["return"]["resultado"],
-                        });
-                    } else {
-                        res.json({
-                            codRetorno: "0010",
-                            retorno: result["return"]["propietario"],
-                        });
-                    }
-                }
-            },
-            null,
-            soapHeader
-        );
-    });
-};
-
-const consultarLicencia = async(req, res) => {
-    // console.log("Bloqueo");
-    // WEB
-    //"1400589527",
-    // "CONSULTA",
-    // 0717422000
-    // 1717422321
-    // AXISANT
-    const { identificacion, canal, usuario } = req.body;
-    const url = config.WSDL_INFRACCIONES;
-    const requestArgs = { identificacion, canal, usuario };
-    const soapHeader = {
-        username: config.USERNAME,
-        password: config.PASSWORD,
-    };
-    console.log(requestArgs);
-    const options = {};
-    strongSoap.createClient(url, options, function(err, client) {
-        const method = client["consultarLicencia"];
-        method(
-            requestArgs,
-            function(err, result, envelope, soapHeader) {
-                if (err) {
-                    res.json({ codRetorno: "0010", retorno: err });
-                } else {
-                    console.log("Resultado", result);
                     if (result["return"]["resultado"]["codError"] == 0) {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else {
@@ -176,40 +39,173 @@ const consultarLicencia = async(req, res) => {
     });
 };
 
-const consultarDeudas = async(req, res) => {
-    // CED
-    // 1717422321
-    // PCS5742
-    // 0400827631
-    // VEH
-    // 1718828781
-    // PCH1989
-    // CED
-    // 0201443678
-    // PBF6660
-    const { tipoIdentificacion, identificacion, placa } = req.body;
-    const url = config.WSDL_INFRACCIONES;
-    const requestArgs = { tipoIdentificacion, identificacion, placa };
+const consultarVehiculoNuevo = async(req, res) => {
+    const { tipoConsulta, valorConsulta } = req.body;
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { tipoConsulta, valorConsulta };
+
     const soapHeader = {
         username: config.USERNAME,
         password: config.PASSWORD,
     };
-    // console.log(requestArgs);
+
     const options = {};
     strongSoap.createClient(url, options, function(err, client) {
-        const method = client["consultarDeudas"];
+        console.log("Cliente->", client);
+
+        const method = client["consultarVehiculoNuevo"];
+
         method(
             requestArgs,
             function(err, result, envelope, soapHeader) {
                 if (err) {
-                    res.json({ ok: false, codRetorno: "0010", retorno: err });
+                    res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    console.log("Resultado", result);
+                    console.log(result);
                     if (result["return"]["resultado"]["codError"] == 0) {
-                        res.json({ ok: false, codRetorno: "0001", retorno: result["return"] });
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else {
                         res.json({
-                            ok: true,
+                            codRetorno: "0010",
+                            retorno: result["return"]["resultado"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+const actualizarDatosVehPro = async(req, res) => {
+    // const { tipoConsulta, valorConsulta } = req.body;
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = req.body;
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        console.log("Cliente->", client);
+        const method = client["actualizarDatosVehiculo"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    console.log(result);
+                    if (result["return"]["resultado"]["codError"] == 0) {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"]["resultado"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+const consultarTransPla = async(req, res) => {
+    const { idTramiteAnt } = req.params;
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { idTramiteAnt };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        console.log("Cliente->", client);
+        const method = client["consultarTransPla"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    console.log(result);
+                    if (result["return"]["resultado"]["codError"] == 0) {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"]["resultado"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+const consultarSolPlaca = async(req, res) => {
+    const { idTramiteAnt } = req.params;
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { idTramiteAnt };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        console.log("Cliente->", client);
+        const method = client["consultarSolPlaca"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    console.log(result);
+                    if (result["return"]["resultado"]["codError"] == 0) {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"]["resultado"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+const validarBloqueosProc = async(req, res) => {
+    const { fecha, placa, proceso } = req.body;
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { fecha, placa, proceso };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        console.log("Cliente->", client);
+        const method = client["validarBloqueosProc"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    console.log(result);
+                    if (result["return"]["resultado"]["codError"] == 0) {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
                             codRetorno: "0010",
                             retorno: result["return"]["resultado"],
                         });
@@ -223,9 +219,11 @@ const consultarDeudas = async(req, res) => {
 };
 
 module.exports = {
-    consultarVehiculo,
-    consultarBloqueos,
-    consultarHistorial,
-    consultarLicencia,
-    consultarDeudas,
+    matriculacion,
+    consultarVehiculoNuevo,
+    actualizarDatosVehPro,
+    consultarTransPla,
+    consultarSolPlaca,
+    validarBloqueosProc,
+
 };
