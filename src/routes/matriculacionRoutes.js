@@ -63,7 +63,7 @@ router.get(
 );
 
 router.post(
-    "/consultarSolPlaca/:idTramiteAnt", [
+    "/validarBloqueosProc/:idTramiteAnt", [
         check("fecha", "la fecha es obligatoria").not().isEmpty(),
         check("placa", " la placaes obligatoria").not().isEmpty(),
         check("proceso", " el proceso obligatorio").not().isEmpty(),

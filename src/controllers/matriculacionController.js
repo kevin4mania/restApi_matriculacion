@@ -42,7 +42,13 @@ const matriculacion = async(req, res) => {
 const consultarVehiculoNuevo = async(req, res) => {
     const { tipoConsulta, valorConsulta } = req.body;
     const url = config.WSDL_MATRICULACION;
-    const requestArgs = { tipoConsulta, valorConsulta };
+    const requestArgs = {
+        datos: {
+
+            tipoConsulta,
+            valorConsulta
+        }
+    };
 
     const soapHeader = {
         username: config.USERNAME,
@@ -57,17 +63,17 @@ const consultarVehiculoNuevo = async(req, res) => {
 
         method(
             requestArgs,
-            function(err, result, envelope, soapHeader) {
+            function(err, result, envelope) {
                 if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
                     console.log(result);
-                    if (result["return"]["resultado"]["codError"] == 0) {
+                    if (result["return"]["resultado"]["exito"] == "N") {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else {
                         res.json({
                             codRetorno: "0010",
-                            retorno: result["return"]["resultado"],
+                            retorno: result,
                         });
                     }
                 }
@@ -89,7 +95,7 @@ const actualizarDatosVehPro = async(req, res) => {
     const options = {};
     strongSoap.createClient(url, options, function(err, client) {
         console.log("Cliente->", client);
-        const method = client["actualizarDatosVehiculo"];
+        const method = client["actualizarDatosVehPro"];
         method(
             requestArgs,
             function(err, result, envelope, soapHeader) {
@@ -132,12 +138,12 @@ const consultarTransPla = async(req, res) => {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
                     console.log(result);
-                    if (result["return"]["resultado"]["codError"] == 0) {
+                    if (result["return"] == 0) {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else {
                         res.json({
                             codRetorno: "0010",
-                            retorno: result["return"]["resultado"],
+                            retorno: result["return"],
                         });
                     }
                 }
@@ -167,15 +173,22 @@ const consultarSolPlaca = async(req, res) => {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
                     console.log(result);
-                    if (result["return"]["resultado"]["codError"] == 0) {
-                        res.json({ codRetorno: "0001", retorno: result["return"] });
-                    } else {
-                        res.json({
-                            codRetorno: "0010",
-                            retorno: result["return"]["resultado"],
-                        });
-                    }
+                    res.json({
+                        codRetorno: "0010",
+                        retorno: result["return"],
+                    });
+                    /*
+                                        if (result["return"]["resultado"]["codError"] == 0) {
+                                            res.json({ codRetorno: "0001", retorno: result["return"] });
+                                        } else {
+                                            res.json({
+                                                codRetorno: "0010",
+                                                retorno: result["return"]["resultado"],
+                                            });
+                                        }
+                                        */
                 }
+
             },
             null,
             soapHeader
