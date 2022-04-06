@@ -1,5 +1,6 @@
 const config = require("../configs/config");
 const strongSoap = require("strong-soap").soap;
+const { parseString } = require("xml2js");
 
 const matriculacion = async(req, res) => {
     // console.log("Vehiculo");
@@ -114,6 +115,7 @@ const actualizarDatosVehPro = async(req, res) => {
 };
 
 const consultarTransPla = async(req, res) => {
+    let XML_JSON;
     console.log("consulta trans pla");
     const { idTramiteAnt } = req.params;
     const url = config.WSDL_MATRICULACION;
@@ -132,19 +134,21 @@ const consultarTransPla = async(req, res) => {
                 if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    // console.log(result);
-                    res.json({
-                        codRetorno: "0010",
-                        retorno: result["return"],
-                    });
-                    // if (result["return"]== "N") {
-                    //     res.json({ codRetorno: "0001", retorno: result["return"] });
-                    // } else {
-                    //     res.json({
-                    //         codRetorno: "0010",
-                    //         retorno: result["return"],
-                    //     });
-                    // }
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        parseString(
+                            result["return"]["mensaje"], { strict: false, trim: true },
+                            (err, resultado) => {
+                                XML_JSON = resultado;
+                            }
+                        );
+                        res.json({
+                            codRetorno: "0010",
+                            exito: result["return"]["exito"],
+                            retorno: XML_JSON,
+                        });
+                    }
                 }
             },
             null,
@@ -154,6 +158,7 @@ const consultarTransPla = async(req, res) => {
 };
 
 const consultarSolPlaca = async(req, res) => {
+    let XML_JSON;
     console.log("consulta sol pla");
     const { idTramiteAnt } = req.params;
     const url = config.WSDL_MATRICULACION;
@@ -172,21 +177,21 @@ const consultarSolPlaca = async(req, res) => {
                 if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    console.log(result);
-                    res.json({
-                        codRetorno: "0010",
-                        retorno: result["return"],
-                    });
-                    /*
-                                        if (result["return"]["resultado"]["codError"] == 0) {
-                                            res.json({ codRetorno: "0001", retorno: result["return"] });
-                                        } else {
-                                            res.json({
-                                                codRetorno: "0010",
-                                                retorno: result["return"]["resultado"],
-                                            });
-                                        }
-                                        */
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        parseString(
+                            result["return"]["mensaje"], { strict: false, trim: true },
+                            (err, resultado) => {
+                                XML_JSON = resultado;
+                            }
+                        );
+                        res.json({
+                            codRetorno: "0010",
+                            exito: result["return"]["exito"],
+                            retorno: XML_JSON,
+                        });
+                    }
                 }
             },
             null,
@@ -266,6 +271,35 @@ const actualizarBeneficiario = async(req, res) => {
     });
 };
 
+const axios = require("axios");
+const pruebaXMLTrans = async(req, res) => {
+    let XML_JSON;
+    await axios
+        .get(
+            `http://172.20.68.52:5001/api/matriculacion/consultarTransPla/28122527`
+        )
+        .then((response) => {
+            console.log(response.data);
+
+            parseString(
+                response.data.retorno.mensaje, { strict: false, trim: true },
+                (err, resultado) => {
+                    XML_JSON = resultado;
+                }
+            );
+            res.json({
+                codRetorno: "0010",
+                retorno: XML_JSON,
+            });
+            // res.json({
+            //     data: response,
+            // });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
 module.exports = {
     matriculacion,
     consultarVehiculoNuevo,
@@ -274,4 +308,5 @@ module.exports = {
     consultarSolPlaca,
     validarBloqueosProc,
     actualizarBeneficiario,
+    pruebaXMLTrans
 };
