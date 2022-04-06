@@ -43,10 +43,7 @@ router.post(
 );
 router.get(
     "/consultarTransPla/:idTramiteAnt", [
-        // check("tipoConsulta", "el tipoConsulta es obligatorio").not().isEmpty(),
-        // check("valorConsulta", "el valorConsulta es obligatoria").not().isEmpty(),
         // validarJWT,
-        // validarCampos,
         // validaAccesoUsuario,
     ],
     consultarTransPla

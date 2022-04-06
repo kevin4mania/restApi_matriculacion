@@ -1,4 +1,5 @@
 const { Types } = require("mongoose");
+const _ = require('underscore');
 
 const Metodo = require("../models/metodos");
 const Usuario = require("../models/usuario");
@@ -173,10 +174,78 @@ const consultarRegistroMetodos = async(req, res = response) => {
         });
     }
 }
+
+const actualizarEstadoMetodo = async(req, res = response) => {
+    const { idMetodo } = req.body;
+    try {
+        let data = req.body;
+        const metodoDB = await Metodo.findOne({ _id: Types.ObjectId(idMetodo) });
+        if (!metodoDB || metodoDB.length == 0) {
+            return res.status(404).json({
+                ok: false,
+                msg: "Ruta no encontrada",
+            });
+        }
+        let body = _.pick(data, ['nombreMetodo', 'estado']);
+        delete body.nombreMetodo;
+        const metodoUpdateBDD = await Metodo.findByIdAndUpdate(idMetodo, body, { new: true, runValidators: true, context: 'query' });
+        if (!metodoUpdateBDD || metodoUpdateBDD.length == 0) {
+            return res.status(400).json({
+                ok: false,
+                msg: "Ocurrio un error al guardar en la base",
+            });
+        }
+        res.json({
+            ok: true,
+            msg: `Se actualizo los datos`,
+            metodoUpdateBDD,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Hable con el administrador",
+        });
+    }
+}
+
+const actualizarEstadoRegistroRutas = async(req, res = response) => {
+    const { idRegistroRuta } = req.body;
+    try {
+        let data = req.body;
+        const registroRutaBDD = await RegistroMetodos.findOne({ _id: Types.ObjectId(idRegistroRuta) });
+        if (!registroRutaBDD || registroRutaBDD.length == 0) {
+            return res.status(404).json({
+                ok: false,
+                msg: "Ruta no encontrada",
+            });
+        }
+        let body = _.pick(data, ['nombre', 'descripcion', 'observacion', 'URL', 'estadoRM']);
+        const registroBDD = await RegistroMetodos.findByIdAndUpdate(idRegistroRuta, body, { new: true, runValidators: true, context: 'query' });
+        if (!registroBDD || registroBDD.length == 0) {
+            return res.status(400).json({
+                ok: false,
+                msg: "Ocurrio un error al guardar en la base",
+            });
+        }
+        res.json({
+            ok: true,
+            msg: `Se actualizo los datos`,
+            registroBDD,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Hable con el administrador",
+        });
+    }
+}
+
 module.exports = {
     consultaMetodosPorUsuario,
     consultaMetodosTodosUsuarios,
     darPermisoAccesoMetodo,
     ingresarNuevoMetodo,
-    consultarRegistroMetodos
+    consultarRegistroMetodos,
+    actualizarEstadoMetodo,
+    actualizarEstadoRegistroRutas
 };

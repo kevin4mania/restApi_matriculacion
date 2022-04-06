@@ -40,40 +40,35 @@ const matriculacion = async(req, res) => {
 };
 
 const consultarVehiculoNuevo = async(req, res) => {
+    console.log("Consulta vehiculo nuevo");
     const { tipoConsulta, valorConsulta } = req.body;
     const url = config.WSDL_MATRICULACION;
     const requestArgs = {
         datos: {
-
             tipoConsulta,
-            valorConsulta
-        }
+            valorConsulta,
+        },
     };
-
     const soapHeader = {
         username: config.USERNAME,
         password: config.PASSWORD,
     };
-
     const options = {};
     strongSoap.createClient(url, options, function(err, client) {
-        console.log("Cliente->", client);
-
         const method = client["consultarVehiculoNuevo"];
-
         method(
             requestArgs,
-            function(err, result, envelope) {
+            function(err, result, envelope, soapHeader) {
                 if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    console.log(result);
-                    if (result["return"]["resultado"]["exito"] == "N") {
+                    // console.log(result);
+                    if (result["return"]["exito"] == "N") {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else {
                         res.json({
                             codRetorno: "0010",
-                            retorno: result,
+                            retorno: result["return"],
                         });
                     }
                 }
@@ -83,16 +78,15 @@ const consultarVehiculoNuevo = async(req, res) => {
         );
     });
 };
-
 const actualizarDatosVehPro = async(req, res) => {
-    // const { tipoConsulta, valorConsulta } = req.body;
     const url = config.WSDL_MATRICULACION;
-    const requestArgs = req.body;
+    const requestArgs = { datos: req.body };
     const soapHeader = {
         username: config.USERNAME,
         password: config.PASSWORD,
     };
     const options = {};
+    console.log(requestArgs);
     strongSoap.createClient(url, options, function(err, client) {
         console.log("Cliente->", client);
         const method = client["actualizarDatosVehPro"];
@@ -102,43 +96,8 @@ const actualizarDatosVehPro = async(req, res) => {
                 if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    console.log(result);
-                    if (result["return"]["resultado"]["codError"] == 0) {
-                        res.json({ codRetorno: "0001", retorno: result["return"] });
-                    } else {
-                        res.json({
-                            codRetorno: "0010",
-                            retorno: result["return"]["resultado"],
-                        });
-                    }
-                }
-            },
-            null,
-            soapHeader
-        );
-    });
-};
-
-const consultarTransPla = async(req, res) => {
-    const { idTramiteAnt } = req.params;
-    const url = config.WSDL_MATRICULACION;
-    const requestArgs = { idTramiteAnt };
-    const soapHeader = {
-        username: config.USERNAME,
-        password: config.PASSWORD,
-    };
-    const options = {};
-    strongSoap.createClient(url, options, function(err, client) {
-        console.log("Cliente->", client);
-        const method = client["consultarTransPla"];
-        method(
-            requestArgs,
-            function(err, result, envelope, soapHeader) {
-                if (err) {
-                    res.json({ codRetorno: "0010", retorno: err });
-                } else {
-                    console.log(result);
-                    if (result["return"] == 0) {
+                    // console.log(result);
+                    if (result["return"]["exito"] == "N") {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else {
                         res.json({
@@ -154,7 +113,8 @@ const consultarTransPla = async(req, res) => {
     });
 };
 
-const consultarSolPlaca = async(req, res) => {
+const consultarTransPla = async(req, res) => {
+    console.log("consulta trans pla");
     const { idTramiteAnt } = req.params;
     const url = config.WSDL_MATRICULACION;
     const requestArgs = { idTramiteAnt };
@@ -164,7 +124,47 @@ const consultarSolPlaca = async(req, res) => {
     };
     const options = {};
     strongSoap.createClient(url, options, function(err, client) {
-        console.log("Cliente->", client);
+        // console.log("Cliente->", client);
+        const method = client["consultarTransPla"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    // console.log(result);
+                    res.json({
+                        codRetorno: "0010",
+                        retorno: result["return"],
+                    });
+                    // if (result["return"]== "N") {
+                    //     res.json({ codRetorno: "0001", retorno: result["return"] });
+                    // } else {
+                    //     res.json({
+                    //         codRetorno: "0010",
+                    //         retorno: result["return"],
+                    //     });
+                    // }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+const consultarSolPlaca = async(req, res) => {
+    console.log("consulta sol pla");
+    const { idTramiteAnt } = req.params;
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { idTramiteAnt };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        // console.log("Cliente->", client);
         const method = client["consultarSolPlaca"];
         method(
             requestArgs,
@@ -188,7 +188,6 @@ const consultarSolPlaca = async(req, res) => {
                                         }
                                         */
                 }
-
             },
             null,
             soapHeader
@@ -265,7 +264,7 @@ const actualizarBeneficiario = async(req, res) => {
             soapHeader
         );
     });
-}
+};
 
 module.exports = {
     matriculacion,
@@ -274,6 +273,5 @@ module.exports = {
     consultarTransPla,
     consultarSolPlaca,
     validarBloqueosProc,
-    actualizarBeneficiario
-
+    actualizarBeneficiario,
 };

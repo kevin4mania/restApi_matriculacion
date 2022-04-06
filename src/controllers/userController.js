@@ -54,7 +54,7 @@ const login = async(req, res = response) => {
                 msg: "Credenciales incorrectas",
             });
         }
-        console.log(usuarioDB);
+        // console.log(usuarioDB);
         if (!usuarioDB.online) {
             return res.status(404).json({
                 ok: false,
