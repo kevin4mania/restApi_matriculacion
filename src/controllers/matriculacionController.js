@@ -203,7 +203,7 @@ const consultarSolPlaca = async(req, res) => {
 const validarBloqueosProc = async(req, res) => {
     const { fecha, placa, proceso } = req.body;
     const url = config.WSDL_MATRICULACION;
-    const requestArgs = { fecha, placa, proceso };
+    const requestArgs = { datos: { fecha, placa, proceso } };
     const soapHeader = {
         username: config.USERNAME,
         password: config.PASSWORD,
@@ -218,13 +218,12 @@ const validarBloqueosProc = async(req, res) => {
                 if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    console.log(result);
-                    if (result["return"]["resultado"]["codError"] == 0) {
+                    if (result["return"]["codError"] == 0) {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else {
                         res.json({
                             codRetorno: "0010",
-                            retorno: result["return"]["resultado"],
+                            retorno: result["return"],
                         });
                     }
                 }
@@ -237,18 +236,14 @@ const validarBloqueosProc = async(req, res) => {
 
 const actualizarBeneficiario = async(req, res) => {
     const url = config.WSDL_INFRACCIONES;
-    const requestArgs = req.body;
-
+    const requestArgs = { datos: req.body };
     const soapHeader = {
         username: config.USERNAME,
         password: config.PASSWORD,
     };
-
     const options = {};
-
     strongSoap.createClient(url, options, function(err, client) {
         const method = client["actualizarBeneficiario"];
-
         method(
             requestArgs,
             function(err, result, envelope, soapHeader) {
@@ -300,6 +295,36 @@ const pruebaXMLTrans = async(req, res) => {
         });
 };
 
+const ACCESOWS = async(req, res) => {
+    const { funcionAcceso, data } = req.body;
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = data;
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client[funcionAcceso];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    res.json({
+                        funcion: funcionAcceso,
+                        data: requestArgs,
+                        retorno: result["return"]
+                    });
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+
 module.exports = {
     matriculacion,
     consultarVehiculoNuevo,
@@ -308,5 +333,6 @@ module.exports = {
     consultarSolPlaca,
     validarBloqueosProc,
     actualizarBeneficiario,
-    pruebaXMLTrans
+    // pruebaXMLTrans,
+    ACCESOWS
 };

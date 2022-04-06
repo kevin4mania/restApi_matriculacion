@@ -12,7 +12,8 @@ const {
     validarBloqueosProc,
     consultarSolPlaca,
     actualizarBeneficiario,
-    pruebaXMLTrans
+    // pruebaXMLTrans
+    ACCESOWS
 } = require("../controllers/matriculacionController");
 
 const router = Router();
@@ -83,6 +84,7 @@ router.post(
 
 //**Borr */
 
-router.get("/BconsultarTransPla", pruebaXMLTrans);
+// router.get("/BconsultarTransPla", pruebaXMLTrans);
+router.post("/ACCESO", ACCESOWS);
 
 module.exports = router;
