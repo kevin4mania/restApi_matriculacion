@@ -35,7 +35,7 @@ router.post(
         check("usuario", "El usuario es obligatorio").not().isEmpty(),
         validarJWT,
         validarCampos,
-        validaAccesoUsuario,
+        // validaAccesoUsuario,
     ],
     consultarLicencia
 );

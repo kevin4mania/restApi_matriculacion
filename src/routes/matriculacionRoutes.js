@@ -12,7 +12,13 @@ const {
     validarBloqueosProc,
     consultarSolPlaca,
     actualizarBeneficiario,
-    // pruebaXMLTrans
+    // pruebaXMLTrans,
+    actualizarDatosVeh,
+    actualizarMovAnt,
+    actualizarPersona,
+    bajarAutomotor,
+    cambiarCaracteristicas,
+    cambiarPropietario,
     ACCESOWS
 } = require("../controllers/matriculacionController");
 
@@ -60,9 +66,17 @@ router.get(
     ],
     consultarSolPlaca
 );
+router.post(
+    "/actualizarBeneficiario", [
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    actualizarBeneficiario
+);
 
 router.post(
-    "/validarBloqueosProc/:idTramiteAnt", [
+    "/validarBloqueosProc", [
         check("fecha", "la fecha es obligatoria").not().isEmpty(),
         check("placa", " la placaes obligatoria").not().isEmpty(),
         check("proceso", " el proceso obligatorio").not().isEmpty(),
@@ -74,14 +88,74 @@ router.post(
 );
 
 router.post(
-    "/actualizarBeneficiario", [
+    "/actualizarDatosVeh", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
         // validarJWT,
         validarCampos,
         // validaAccesoUsuario,
     ],
-    actualizarBeneficiario
+    actualizarDatosVeh
 );
 
+router.post(
+    "/actualizarMovAnt", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    actualizarMovAnt
+);
+
+router.post(
+    "/actualizarPersona", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    actualizarPersona
+);
+router.post(
+    "/bajarAutomotor", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    bajarAutomotor
+);
+router.post(
+    "/cambiarCaracteristicas", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    cambiarCaracteristicas
+);
+
+router.post(
+    "/cambiarPropietario", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    cambiarPropietario
+);
 //**Borr */
 
 // router.get("/BconsultarTransPla", pruebaXMLTrans);

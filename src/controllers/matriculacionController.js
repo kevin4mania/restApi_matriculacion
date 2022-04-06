@@ -218,12 +218,14 @@ const validarBloqueosProc = async(req, res) => {
                 if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    if (result["return"]["codError"] == 0) {
+                    if (result["return"]["resultado"]["codError"] == 0) {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else if (result["return"]["resultado"]["codError"] == 1) {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else {
                         res.json({
                             codRetorno: "0010",
-                            retorno: result["return"],
+                            retorno: result["return"]["resultado"],
                         });
                     }
                 }
@@ -250,12 +252,12 @@ const actualizarBeneficiario = async(req, res) => {
                 if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    if (result["return"]["resultado"]["codError"] == 0) {
+                    if (result["return"]["exito"] == "N") {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else {
                         res.json({
                             codRetorno: "0010",
-                            retorno: result["return"]["resultado"],
+                            retorno: result["return"],
                         });
                     }
                 }
@@ -266,6 +268,201 @@ const actualizarBeneficiario = async(req, res) => {
     });
 };
 
+const actualizarDatosVeh = async(req, res) => {
+    const url = config.WSDL_INFRACCIONES;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["actualizarDatosVeh"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+
+const actualizarMovAnt = async(req, res) => {
+    const url = config.WSDL_INFRACCIONES;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["actualizarMovAnt"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+
+const actualizarPersona = async(req, res) => {
+    const url = config.WSDL_INFRACCIONES;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["actualizarPersona"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+const bajarAutomotor = async(req, res) => {
+    const url = config.WSDL_INFRACCIONES;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["bajarAutomotor"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+const cambiarCaracteristicas = async(req, res) => {
+    const url = config.WSDL_INFRACCIONES;
+    const requestArgs = { servicio: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["cambiarCaracteristicas"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+const cambiarPropietario = async(req, res) => {
+    const url = config.WSDL_INFRACCIONES;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["cambiarPropietario"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+
+//**!--------------------------------------------- */
 const axios = require("axios");
 const pruebaXMLTrans = async(req, res) => {
     let XML_JSON;
@@ -316,7 +513,7 @@ const ACCESOWS = async(req, res) => {
                         res.json({
                             funcion: funcionAcceso,
                             data: requestArgs,
-                            retorno: result["return"]
+                            retorno: result["return"],
                         });
                     }
                 },
@@ -330,8 +527,8 @@ const ACCESOWS = async(req, res) => {
             msg: "Hable con el administrador",
         });
     }
-
-}
+};
+//**!--------------------------------------------- */
 
 module.exports = {
     matriculacion,
@@ -342,5 +539,11 @@ module.exports = {
     validarBloqueosProc,
     actualizarBeneficiario,
     // pruebaXMLTrans,
-    ACCESOWS
+    ACCESOWS,
+    actualizarDatosVeh,
+    actualizarMovAnt,
+    actualizarPersona,
+    bajarAutomotor,
+    cambiarCaracteristicas,
+    cambiarPropietario
 };
