@@ -296,33 +296,41 @@ const pruebaXMLTrans = async(req, res) => {
 };
 
 const ACCESOWS = async(req, res) => {
-    const { funcionAcceso, data } = req.body;
-    const url = config.WSDL_MATRICULACION;
-    const requestArgs = data;
-    const soapHeader = {
-        username: config.USERNAME,
-        password: config.PASSWORD,
-    };
-    const options = {};
-    strongSoap.createClient(url, options, function(err, client) {
-        const method = client[funcionAcceso];
-        method(
-            requestArgs,
-            function(err, result, envelope, soapHeader) {
-                if (err) {
-                    res.json({ codRetorno: "0010", retorno: err });
-                } else {
-                    res.json({
-                        funcion: funcionAcceso,
-                        data: requestArgs,
-                        retorno: result["return"]
-                    });
-                }
-            },
-            null,
-            soapHeader
-        );
-    });
+    try {
+        const { funcionAcceso, data } = req.body;
+        const url = config.WSDL_MATRICULACION;
+        const requestArgs = data;
+        const soapHeader = {
+            username: config.USERNAME,
+            password: config.PASSWORD,
+        };
+        const options = {};
+        strongSoap.createClient(url, options, function(err, client) {
+            const method = client[funcionAcceso];
+            method(
+                requestArgs,
+                function(err, result, envelope, soapHeader) {
+                    if (err) {
+                        res.json({ codRetorno: "0010", retorno: err });
+                    } else {
+                        res.json({
+                            funcion: funcionAcceso,
+                            data: requestArgs,
+                            retorno: result["return"]
+                        });
+                    }
+                },
+                null,
+                soapHeader
+            );
+        });
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Hable con el administrador",
+        });
+    }
+
 }
 
 module.exports = {
