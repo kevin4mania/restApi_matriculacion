@@ -10,6 +10,13 @@ const {
     consultaVehiculoPlaca,
     saveVehiculo,
     anularOrden,
+    consultarResultado,
+    finalizarOrden,
+    registrarResultado,
+    solicitarOrden,
+    solicitarOrdenGAD,
+    validarOrden,
+    verificarOrden,
     ACCESOWS,
 } = require("../controllers/rtvController");
 
@@ -18,7 +25,14 @@ router.post(
     consultaVehiculoPlaca
 );
 router.post("/saveVehiculo", [validarJWT, validaAccesoUsuario], saveVehiculo);
-router.post("/anularOrden", anularOrden);
+router.post("/anularOrden", [validarCampos], anularOrden);
+router.post("/consultarResultado", [validarCampos], consultarResultado);
+router.post("/finalizarOrden", [validarCampos], finalizarOrden);
+router.post("/registrarResultado", [validarCampos], registrarResultado);
+router.post("/solicitarOrden", [validarCampos], solicitarOrden);
+router.post("/solicitarOrdenGAD", [validarCampos], solicitarOrdenGAD);
+router.post("/validarOrden", [validarCampos], validarOrden);
+router.post("/verificarOrden", [validarCampos], verificarOrden);
 
 //**Borrar */
 router.post("/ACCESO", ACCESOWS);

@@ -87,12 +87,12 @@ const anularOrden = async(req, res) => {
                 if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    if (result["return"]["resultado"]["codError"] == 0) {
+                    if (result["return"]["exito"] == 'N') {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else {
                         res.json({
                             codRetorno: "0010",
-                            retorno: result["return"]["resultado"],
+                            retorno: result["return"],
                         });
                     }
                 }
@@ -102,6 +102,250 @@ const anularOrden = async(req, res) => {
         );
     });
 };
+const consultarResultado = async(req, res) => {
+    const url = config.WSDL_RTV;
+    const requestArgs = req.body;
+
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+
+    const options = {};
+
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["consultarResultado"];
+
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["codError"] == '-1') {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+const finalizarOrden = async(req, res) => {
+    const url = config.WSDL_RTV;
+    const requestArgs = { orden: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["finalizarOrden"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["codError"] == '-1') {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+const registrarResultado = async(req, res) => {
+    const url = config.WSDL_RTV;
+    const requestArgs = { DetalleResultado: req.body };
+
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+
+    const options = {};
+
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["registrarResultado"];
+
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["codError"] == '-1') {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+const solicitarOrden = async(req, res) => {
+    const url = config.WSDL_RTV;
+    const requestArgs = { orden: req.body };
+
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+
+    const options = {};
+
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["solicitarOrden"];
+
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["codError"] == '-1') {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+const solicitarOrdenGAD = async(req, res) => {
+    const url = config.WSDL_RTV;
+    const requestArgs = { orden: req.body };
+
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+
+    const options = {};
+
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["solicitarOrdenGAD"];
+
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["codError"] == '-1') {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+const validarOrden = async(req, res) => {
+    const url = config.WSDL_RTV;
+    const requestArgs = { orden: req.body };
+
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+
+    const options = {};
+
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["validarOrden"];
+
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == 'N') {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+const verificarOrden = async(req, res) => {
+    const url = config.WSDL_RTV;
+    const requestArgs = { orden: req.body };
+
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+
+    const options = {};
+
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["verificarOrden"];
+
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["codError"] == '-1') {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+
+//*** */
 
 const ACCESOWS = async(req, res) => {
     try {
@@ -145,5 +389,12 @@ module.exports = {
     consultaVehiculoPlaca,
     saveVehiculo,
     ACCESOWS,
-    anularOrden
+    anularOrden,
+    consultarResultado,
+    finalizarOrden,
+    registrarResultado,
+    solicitarOrden,
+    solicitarOrdenGAD,
+    validarOrden,
+    verificarOrden
 };
