@@ -950,69 +950,70 @@ const solicitarPlaca = async(req, res) => {
     });
 }
 const verificacionChasisMotor = async(req, res) => {
-    const url = config.WSDL_MATRICULACION;
-    const requestArgs = { servicio: req.body };
-    const soapHeader = {
-        username: config.USERNAME,
-        password: config.PASSWORD,
-    };
-    const options = {};
-    strongSoap.createClient(url, options, function(err, client) {
-        const method = client["verificacionChasisMotor"];
-        method(
-            requestArgs,
-            function(err, result, envelope, soapHeader) {
-                if (err) {
-                    res.json({ codRetorno: "0010", retorno: err });
-                } else {
-                    if (result["return"]["exito"] == "N") {
-                        res.json({ codRetorno: "0001", retorno: result["return"] });
+        const url = config.WSDL_MATRICULACION;
+        const requestArgs = { servicio: req.body };
+        const soapHeader = {
+            username: config.USERNAME,
+            password: config.PASSWORD,
+        };
+        const options = {};
+        strongSoap.createClient(url, options, function(err, client) {
+            const method = client["verificacionChasisMotor"];
+            method(
+                requestArgs,
+                function(err, result, envelope, soapHeader) {
+                    if (err) {
+                        res.json({ codRetorno: "0010", retorno: err });
                     } else {
-                        res.json({
-                            codRetorno: "0010",
-                            retorno: result["return"],
-                        });
+                        if (result["return"]["exito"] == "N") {
+                            res.json({ codRetorno: "0001", retorno: result["return"] });
+                        } else {
+                            res.json({
+                                codRetorno: "0010",
+                                retorno: result["return"],
+                            });
+                        }
                     }
-                }
-            },
-            null,
-            soapHeader
-        );
-    });
-}
-const c15 = async(req, res) => {
-    const url = config.WSDL_MATRICULACION;
-    const requestArgs = { datos: req.body };
-    const soapHeader = {
-        username: config.USERNAME,
-        password: config.PASSWORD,
-    };
-    const options = {};
-    strongSoap.createClient(url, options, function(err, client) {
-        const method = client["consultarMovXProceso"];
-        method(
-            requestArgs,
-            function(err, result, envelope, soapHeader) {
-                if (err) {
-                    res.json({ codRetorno: "0010", retorno: err });
-                } else {
-                    if (result["return"]["resultado"]["exito"] == "N") {
-                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                },
+                null,
+                soapHeader
+            );
+        });
+    }
+    /*
+    const c15 = async(req, res) => {
+        const url = config.WSDL_MATRICULACION;
+        const requestArgs = { datos: req.body };
+        const soapHeader = {
+            username: config.USERNAME,
+            password: config.PASSWORD,
+        };
+        const options = {};
+        strongSoap.createClient(url, options, function(err, client) {
+            const method = client[""];
+            method(
+                requestArgs,
+                function(err, result, envelope, soapHeader) {
+                    if (err) {
+                        res.json({ codRetorno: "0010", retorno: err });
                     } else {
-                        res.json({
-                            codRetorno: "0010",
-                            retorno: result["return"],
-                        });
+                        if (result["return"]["resultado"]["exito"] == "N") {
+                            res.json({ codRetorno: "0001", retorno: result["return"] });
+                        } else {
+                            res.json({
+                                codRetorno: "0010",
+                                retorno: result["return"],
+                            });
+                        }
                     }
-                }
-            },
-            null,
-            soapHeader
-        );
-    });
-}
-
-//**!--------------------------------------------- */
+                },
+                null,
+                soapHeader
+            );
+        });
+    }
+    */
+    //**!--------------------------------------------- */
 const axios = require("axios");
 const pruebaXMLTrans = async(req, res) => {
     let XML_JSON;
