@@ -19,6 +19,22 @@ const {
     bajarAutomotor,
     cambiarCaracteristicas,
     cambiarPropietario,
+    cambiarServicio,
+    consultarMovXProceso,
+    consultarXmlCertificado,
+    crearOrdenFabricacion,
+    devolverIncidente,
+    finalizarIncidente,
+    generaPlacaPerdida,
+    nuevoServicio,
+    reemplazarPlaca,
+    registrarAutomotor,
+    registrarBloqueo,
+    registrarCertificado,
+    registrarDocTramite,
+    renovarServicio,
+    solicitarPlaca,
+    verificacionChasisMotor,
     ACCESOWS
 } = require("../controllers/matriculacionController");
 
@@ -144,7 +160,6 @@ router.post(
     ],
     cambiarCaracteristicas
 );
-
 router.post(
     "/cambiarPropietario", [
         // check("fecha", "la fecha es obligatoria").not().isEmpty(),
@@ -155,6 +170,204 @@ router.post(
         // validaAccesoUsuario,
     ],
     cambiarPropietario
+);
+router.post(
+    "/cambiarServicio", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    cambiarServicio
+);
+router.post(
+    "/consultarMovXProceso", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    consultarMovXProceso
+);
+router.post(
+    "/consultarXmlCertificado", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    consultarXmlCertificado
+);
+router.post(
+    "/crearOrdenFabricacion", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    crearOrdenFabricacion
+);
+router.post(
+    "/devolverIncidente", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    devolverIncidente
+);
+router.post(
+    "/finalizarIncidente", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    finalizarIncidente
+);
+router.post(
+    "/generaPlacaPerdida", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    generaPlacaPerdida
+);
+router.post(
+    "/nuevoServicio", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    nuevoServicio
+);
+router.post(
+    "/reemplazarPlaca", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    reemplazarPlaca
+);
+router.post(
+    "/registrarAutomotor", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    registrarAutomotor
+);
+router.post(
+    "/registrarBloqueo", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    registrarBloqueo
+);
+router.post(
+    "/registrarCertificado", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    registrarCertificado
+);
+router.post(
+    "/registrarDocTramite", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    registrarDocTramite
+);
+router.post(
+    "/registrarIncidente", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    registrarIncidente
+);
+router.post(
+    "/renovarServicio", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    renovarServicio
+);
+router.post(
+    "/solicitarPlaca", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    solicitarPlaca
+);
+router.post(
+    "/verificacionChasisMotor", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    verificacionChasisMotor
+);
+router.post(
+    "/", [
+        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
+        // check("placa", " la placaes obligatoria").not().isEmpty(),
+        // check("proceso", " el proceso obligatorio").not().isEmpty(),
+        // validarJWT,
+        validarCampos,
+        // validaAccesoUsuario,
+    ],
+    registrarIncidente
 );
 //**Borr */
 

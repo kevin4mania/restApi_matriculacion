@@ -5,7 +5,7 @@ const { parseString } = require("xml2js");
 const matriculacion = async(req, res) => {
     // console.log("Vehiculo");
     const { placa } = req.params;
-    const url = config.WSDL_INFRACCIONES;
+    const url = config.WSDL_MATRICULACION;
     const requestArgs = { placa };
 
     const soapHeader = {
@@ -237,7 +237,7 @@ const validarBloqueosProc = async(req, res) => {
 };
 
 const actualizarBeneficiario = async(req, res) => {
-    const url = config.WSDL_INFRACCIONES;
+    const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
     const soapHeader = {
         username: config.USERNAME,
@@ -269,7 +269,7 @@ const actualizarBeneficiario = async(req, res) => {
 };
 
 const actualizarDatosVeh = async(req, res) => {
-    const url = config.WSDL_INFRACCIONES;
+    const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
     const soapHeader = {
         username: config.USERNAME,
@@ -301,7 +301,7 @@ const actualizarDatosVeh = async(req, res) => {
 }
 
 const actualizarMovAnt = async(req, res) => {
-    const url = config.WSDL_INFRACCIONES;
+    const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
     const soapHeader = {
         username: config.USERNAME,
@@ -334,7 +334,7 @@ const actualizarMovAnt = async(req, res) => {
 
 
 const actualizarPersona = async(req, res) => {
-    const url = config.WSDL_INFRACCIONES;
+    const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
     const soapHeader = {
         username: config.USERNAME,
@@ -366,7 +366,7 @@ const actualizarPersona = async(req, res) => {
 };
 
 const bajarAutomotor = async(req, res) => {
-    const url = config.WSDL_INFRACCIONES;
+    const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
     const soapHeader = {
         username: config.USERNAME,
@@ -398,7 +398,7 @@ const bajarAutomotor = async(req, res) => {
 };
 
 const cambiarCaracteristicas = async(req, res) => {
-    const url = config.WSDL_INFRACCIONES;
+    const url = config.WSDL_MATRICULACION;
     const requestArgs = { servicio: req.body };
     const soapHeader = {
         username: config.USERNAME,
@@ -430,7 +430,7 @@ const cambiarCaracteristicas = async(req, res) => {
 };
 
 const cambiarPropietario = async(req, res) => {
-    const url = config.WSDL_INFRACCIONES;
+    const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
     const soapHeader = {
         username: config.USERNAME,
@@ -461,6 +461,569 @@ const cambiarPropietario = async(req, res) => {
     });
 };
 
+const cambiarServicio = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { servicio: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["cambiarServicio"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+
+const consultarMovXProceso = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["consultarMovXProceso"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+
+const consultarXmlCertificado = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = req.body;
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["consultarXmlCertificado"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+
+const crearOrdenFabricacion = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["crearOrdenFabricacion"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+
+const devolverIncidente = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { incidente: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["devolverIncidente"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+
+const finalizarIncidente = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { incidente: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["finalizarIncidente"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const generaPlacaPerdida = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["generaPlacaPerdida"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const nuevoServicio = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { servicio: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["nuevoServicio"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const reemplazarPlaca = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { servicio: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["reemplazarPlaca"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const registrarAutomotor = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["registrarAutomotor"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const registrarBloqueo = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["registrarBloqueo"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const registrarCertificado = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { certificado: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["registrarCertificado"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const registrarDocTramite = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { documento: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["registrarDocTramite"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const registrarIncidente = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { incidente: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["registrarIncidente"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const renovarServicio = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { servicio: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["renovarServicio"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const solicitarPlaca = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["solicitarPlaca"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const verificacionChasisMotor = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { servicio: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["verificacionChasisMotor"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
+const c15 = async(req, res) => {
+    const url = config.WSDL_MATRICULACION;
+    const requestArgs = { datos: req.body };
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+    const options = {};
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["consultarMovXProceso"];
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["exito"] == "N") {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+}
 
 //**!--------------------------------------------- */
 const axios = require("axios");
@@ -545,5 +1108,22 @@ module.exports = {
     actualizarPersona,
     bajarAutomotor,
     cambiarCaracteristicas,
-    cambiarPropietario
+    cambiarPropietario,
+    cambiarServicio,
+    consultarMovXProceso,
+    consultarXmlCertificado,
+    crearOrdenFabricacion,
+    devolverIncidente,
+    finalizarIncidente,
+    generaPlacaPerdida,
+    nuevoServicio,
+    reemplazarPlaca,
+    registrarAutomotor,
+    registrarBloqueo,
+    registrarCertificado,
+    registrarDocTramite,
+    registrarIncidente,
+    renovarServicio,
+    solicitarPlaca,
+    verificacionChasisMotor
 };
