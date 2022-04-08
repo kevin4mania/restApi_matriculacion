@@ -35,6 +35,7 @@ const {
     renovarServicio,
     solicitarPlaca,
     verificacionChasisMotor,
+    registrarIncidente,
     ACCESOWS
 } = require("../controllers/matriculacionController");
 

@@ -9,6 +9,8 @@ const router = Router();
 const {
     consultaVehiculoPlaca,
     saveVehiculo,
+    anularOrden,
+    ACCESOWS,
 } = require("../controllers/rtvController");
 
 router.post(
@@ -16,5 +18,9 @@ router.post(
     consultaVehiculoPlaca
 );
 router.post("/saveVehiculo", [validarJWT, validaAccesoUsuario], saveVehiculo);
+router.post("/anularOrden", anularOrden);
+
+//**Borrar */
+router.post("/ACCESO", ACCESOWS);
 
 module.exports = router;

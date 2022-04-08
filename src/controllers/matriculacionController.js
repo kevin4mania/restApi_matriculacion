@@ -113,7 +113,6 @@ const actualizarDatosVehPro = async(req, res) => {
         );
     });
 };
-
 const consultarTransPla = async(req, res) => {
     let XML_JSON;
     console.log("consulta trans pla");
@@ -156,7 +155,6 @@ const consultarTransPla = async(req, res) => {
         );
     });
 };
-
 const consultarSolPlaca = async(req, res) => {
     let XML_JSON;
     console.log("consulta sol pla");
@@ -199,7 +197,6 @@ const consultarSolPlaca = async(req, res) => {
         );
     });
 };
-
 const validarBloqueosProc = async(req, res) => {
     const { fecha, placa, proceso } = req.body;
     const url = config.WSDL_MATRICULACION;
@@ -218,7 +215,7 @@ const validarBloqueosProc = async(req, res) => {
                 if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    if (result["return"]["resultado"]["codError"] == 0) {
+                    if (result["return"]["bloqueado"] == 0) {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else if (result["return"]["resultado"]["codError"] == 1) {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
@@ -235,7 +232,6 @@ const validarBloqueosProc = async(req, res) => {
         );
     });
 };
-
 const actualizarBeneficiario = async(req, res) => {
     const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
@@ -267,7 +263,6 @@ const actualizarBeneficiario = async(req, res) => {
         );
     });
 };
-
 const actualizarDatosVeh = async(req, res) => {
     const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
@@ -299,7 +294,6 @@ const actualizarDatosVeh = async(req, res) => {
         );
     });
 }
-
 const actualizarMovAnt = async(req, res) => {
     const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
@@ -331,8 +325,6 @@ const actualizarMovAnt = async(req, res) => {
         );
     });
 };
-
-
 const actualizarPersona = async(req, res) => {
     const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
@@ -364,7 +356,6 @@ const actualizarPersona = async(req, res) => {
         );
     });
 };
-
 const bajarAutomotor = async(req, res) => {
     const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
@@ -396,7 +387,6 @@ const bajarAutomotor = async(req, res) => {
         );
     });
 };
-
 const cambiarCaracteristicas = async(req, res) => {
     const url = config.WSDL_MATRICULACION;
     const requestArgs = { servicio: req.body };
@@ -428,7 +418,6 @@ const cambiarCaracteristicas = async(req, res) => {
         );
     });
 };
-
 const cambiarPropietario = async(req, res) => {
     const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
@@ -460,7 +449,6 @@ const cambiarPropietario = async(req, res) => {
         );
     });
 };
-
 const cambiarServicio = async(req, res) => {
     const url = config.WSDL_MATRICULACION;
     const requestArgs = { servicio: req.body };
@@ -492,7 +480,6 @@ const cambiarServicio = async(req, res) => {
         );
     });
 }
-
 const consultarMovXProceso = async(req, res) => {
     const url = config.WSDL_MATRICULACION;
     const requestArgs = { datos: req.body };
@@ -502,14 +489,14 @@ const consultarMovXProceso = async(req, res) => {
     };
     const options = {};
     strongSoap.createClient(url, options, function(err, client) {
-        const method = client["consultarMovXProceso"];
+        const method = client["consultarMovXProceso"]; //consultarMovXProceso
         method(
             requestArgs,
             function(err, result, envelope, soapHeader) {
                 if (err) {
                     res.json({ codRetorno: "0010", retorno: err });
                 } else {
-                    if (result["return"]["resultado"]["exito"] == "N") {
+                    if (result["return"]["exito"] == "N") {
                         res.json({ codRetorno: "0001", retorno: result["return"] });
                     } else {
                         res.json({

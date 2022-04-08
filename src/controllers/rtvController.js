@@ -67,9 +67,83 @@ const saveVehiculo = async(req, res) => {
             console.log(error);
         });
 }
+const anularOrden = async(req, res) => {
+    const url = config.WSDL_RTV;
+    const requestArgs = { orden: req.body };
+
+    const soapHeader = {
+        username: config.USERNAME,
+        password: config.PASSWORD,
+    };
+
+    const options = {};
+
+    strongSoap.createClient(url, options, function(err, client) {
+        const method = client["anularOrden"];
+
+        method(
+            requestArgs,
+            function(err, result, envelope, soapHeader) {
+                if (err) {
+                    res.json({ codRetorno: "0010", retorno: err });
+                } else {
+                    if (result["return"]["resultado"]["codError"] == 0) {
+                        res.json({ codRetorno: "0001", retorno: result["return"] });
+                    } else {
+                        res.json({
+                            codRetorno: "0010",
+                            retorno: result["return"]["resultado"],
+                        });
+                    }
+                }
+            },
+            null,
+            soapHeader
+        );
+    });
+};
+
+const ACCESOWS = async(req, res) => {
+    try {
+        const { funcionAcceso, data } = req.body;
+        const url = config.WSDL_RTV;
+        const requestArgs = data;
+        const soapHeader = {
+            username: config.USERNAME,
+            password: config.PASSWORD,
+        };
+        const options = {};
+        strongSoap.createClient(url, options, function(err, client) {
+            const method = client[funcionAcceso];
+            method(
+                requestArgs,
+                function(err, result, envelope, soapHeader) {
+                    if (err) {
+                        res.json({ codRetorno: "0010", retorno: err });
+                    } else {
+                        res.json({
+                            funcion: funcionAcceso,
+                            data: requestArgs,
+                            retorno: result["return"],
+                        });
+                    }
+                },
+                null,
+                soapHeader
+            );
+        });
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Hable con el administrador",
+        });
+    }
+};
 
 module.exports = {
     rtv,
     consultaVehiculoPlaca,
-    saveVehiculo
+    saveVehiculo,
+    ACCESOWS,
+    anularOrden
 };
