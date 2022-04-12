@@ -25,14 +25,32 @@ router.post(
     consultaVehiculoPlaca
 );
 router.post("/saveVehiculo", [validarJWT, validaAccesoUsuario], saveVehiculo);
-router.post("/anularOrden", [validarCampos], anularOrden);
-router.post("/consultarResultado", [validarCampos], consultarResultado);
-router.post("/finalizarOrden", [validarCampos], finalizarOrden);
-router.post("/registrarResultado", [validarCampos], registrarResultado);
-router.post("/solicitarOrden", [validarCampos], solicitarOrden);
-router.post("/solicitarOrdenGAD", [validarCampos], solicitarOrdenGAD);
-router.post("/validarOrden", [validarCampos], validarOrden);
-router.post("/verificarOrden", [validarCampos], verificarOrden);
+router.post("/anularOrden", [validarJWT, validaAccesoUsuario], anularOrden);
+router.post(
+    "/consultarResultado", [validarJWT, validaAccesoUsuario],
+    consultarResultado
+);
+router.post(
+    "/finalizarOrden", [validarJWT, validaAccesoUsuario],
+    finalizarOrden
+);
+router.post(
+    "/registrarResultado", [validarJWT, validaAccesoUsuario],
+    registrarResultado
+);
+router.post(
+    "/solicitarOrden", [validarJWT, validaAccesoUsuario],
+    solicitarOrden
+);
+router.post(
+    "/solicitarOrdenGAD", [validarJWT, validaAccesoUsuario],
+    solicitarOrdenGAD
+);
+router.post("/validarOrden", [validarJWT, validaAccesoUsuario], validarOrden);
+router.post(
+    "/verificarOrden", [validarJWT, validaAccesoUsuario],
+    verificarOrden
+);
 
 //**Borrar */
 router.post("/ACCESO", ACCESOWS);

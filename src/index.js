@@ -15,9 +15,11 @@ require("./database/config").dbConnection();
 const app = express();
 
 // Lectura y parseo del Body
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 app.use(morgan("dev")); //dev
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 // Node Server
 const server = require("http").createServer(app);

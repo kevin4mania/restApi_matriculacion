@@ -49,316 +49,214 @@ router.post(
     "/consultarVehiculoNuevo", [
         check("tipoConsulta", "el tipoConsulta es obligatorio").not().isEmpty(),
         check("valorConsulta", "el valorConsulta es obligatoria").not().isEmpty(),
-        // validarJWT,
+        validarJWT,
         validarCampos,
-        // validaAccesoUsuario,
+        validaAccesoUsuario,
     ],
     consultarVehiculoNuevo
 );
 
 router.post(
     "/actualizarDatosVehPro", [
-        // check("tipoConsulta", "el tipoConsulta es obligatorio").not().isEmpty(),
-        // check("valorConsulta", "el valorConsulta es obligatoria").not().isEmpty(),
-        // validarJWT,
-        // validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     actualizarDatosVehPro
 );
 router.get(
     "/consultarTransPla/:idTramiteAnt", [
-        // validarJWT,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     consultarTransPla
 );
 router.get(
     "/consultarSolPlaca/:idTramiteAnt", [
-        // check("tipoConsulta", "el tipoConsulta es obligatorio").not().isEmpty(),
-        // check("valorConsulta", "el valorConsulta es obligatoria").not().isEmpty(),
-        // validarJWT,
-        // validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     consultarSolPlaca
 );
 router.post(
     "/actualizarBeneficiario", [
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     actualizarBeneficiario
 );
 
 router.post(
     "/validarBloqueosProc", [
-        check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        check("placa", " la placaes obligatoria").not().isEmpty(),
-        check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     validarBloqueosProc
 );
 
 router.post(
     "/actualizarDatosVeh", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     actualizarDatosVeh
 );
 
 router.post(
     "/actualizarMovAnt", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     actualizarMovAnt
 );
 
 router.post(
     "/actualizarPersona", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     actualizarPersona
 );
 router.post(
     "/bajarAutomotor", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     bajarAutomotor
 );
 router.post(
     "/cambiarCaracteristicas", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     cambiarCaracteristicas
 );
 router.post(
     "/cambiarPropietario", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     cambiarPropietario
 );
 router.post(
     "/cambiarServicio", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     cambiarServicio
 );
 router.post(
     "/consultarMovXProceso", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     consultarMovXProceso
 );
 router.post(
     "/consultarXmlCertificado", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     consultarXmlCertificado
 );
 router.post(
     "/crearOrdenFabricacion", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     crearOrdenFabricacion
 );
 router.post(
     "/devolverIncidente", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     devolverIncidente
 );
 router.post(
     "/finalizarIncidente", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     finalizarIncidente
 );
 router.post(
     "/generaPlacaPerdida", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     generaPlacaPerdida
 );
 router.post(
     "/nuevoServicio", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     nuevoServicio
 );
 router.post(
     "/reemplazarPlaca", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     reemplazarPlaca
 );
 router.post(
     "/registrarAutomotor", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     registrarAutomotor
 );
 router.post(
     "/registrarBloqueo", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     registrarBloqueo
 );
 router.post(
     "/registrarCertificado", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     registrarCertificado
 );
 router.post(
     "/registrarDocTramite", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     registrarDocTramite
 );
 router.post(
     "/registrarIncidente", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     registrarIncidente
 );
 router.post(
     "/renovarServicio", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     renovarServicio
 );
 router.post(
     "/solicitarPlaca", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     solicitarPlaca
 );
 router.post(
     "/verificacionChasisMotor", [
-        // check("fecha", "la fecha es obligatoria").not().isEmpty(),
-        // check("placa", " la placaes obligatoria").not().isEmpty(),
-        // check("proceso", " el proceso obligatorio").not().isEmpty(),
-        // validarJWT,
-        validarCampos,
-        // validaAccesoUsuario,
+        validarJWT,
+        validaAccesoUsuario,
     ],
     verificacionChasisMotor
 );
+/*
 router.post(
     "/", [
         // check("fecha", "la fecha es obligatoria").not().isEmpty(),
@@ -370,6 +268,7 @@ router.post(
     ],
     registrarIncidente
 );
+*/
 //**Borr */
 
 // router.get("/BconsultarTransPla", pruebaXMLTrans);

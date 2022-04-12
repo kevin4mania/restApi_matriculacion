@@ -49,7 +49,7 @@ const login = async(req, res = response) => {
     try {
         const usuarioDB = await Usuario.findOne({ email });
         if (!usuarioDB) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
                 msg: "Credenciales incorrectas",
             });
@@ -63,7 +63,7 @@ const login = async(req, res = response) => {
         }
         const validPassword = bcrypt.compareSync(password, usuarioDB.password);
         if (!validPassword) {
-            return res.status(400).json({
+            return res.json({
                 ok: false,
                 msg: "La contraseña no es valida",
             });
