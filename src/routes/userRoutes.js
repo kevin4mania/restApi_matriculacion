@@ -16,10 +16,13 @@ const router = Router();
 
 router.post(
     "/new", [
-        // check("nombre", "El nombre es obligatorio").not().isEmpty(),
+        check("username", "El nombre es obligatorio").not().isEmpty(),
+        check("name", "El nombre es obligatorio").not().isEmpty(),
         check("password", "La contraseña es obligatoria").not().isEmpty(),
         check("email", "El correo es obligatorio").not().isEmpty(),
+        validarJWT,
         validarCampos,
+        validaAccesoUsuario
     ],
     crearUsuario
 );

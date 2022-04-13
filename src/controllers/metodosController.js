@@ -10,30 +10,44 @@ const consultaMetodosPorUsuario = async(req, res) => {
         const { IdUsuario } = req.params;
         const usuarioBDD = await Usuario.find({ _id: Types.ObjectId(IdUsuario) });
         if (!usuarioBDD || usuarioBDD.length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0010",
                 msg: "Usuario no encontrado",
             });
         }
         const metodoBDD = await Metodo.find({
-            idUsuario: Types.ObjectId(IdUsuario),
-            estado: true,
+            idUsuario: Types.ObjectId(IdUsuario)
         });
         if (!metodoBDD || metodoBDD.length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0002",
                 usuario: usuarioBDD[0].email,
                 msg: "Usuario no tiene metodos asignados",
             });
         }
+        let arrMetodo = [];
+        for (let metodo of metodoBDD) {
+            let registroMetodosBDD = await RegistroMetodos.findOne({ URL: metodo.nombreMetodo });
+            console.log(registroMetodosBDD);
+            arrMetodo.push({
+                name: registroMetodosBDD.name,
+                description: registroMetodosBDD.description,
+                observation: registroMetodosBDD.observation,
+                URL: metodo.nombreMetodo,
+                online: metodo.online
+            });
+        }
         res.json({
             ok: true,
+            codError: "0001",
             usuario: usuarioBDD[0].email,
-            metodosAcceso: metodoBDD,
+            metodosAcceso: arrMetodo,
         });
     } catch (error) {
-        return res.status(403).json({
-            msg: "0010",
+        return res.json({
+            codError: "999",
             ok: false,
             msg: "Error hable con el administrador",
         });
@@ -45,8 +59,9 @@ const consultaMetodosTodosUsuarios = async(req, res) => {
         const usuarioREQ = req.usuario;
         const metodoBDD = await Metodo.find();
         if (!metodoBDD || metodoBDD.length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0010",
                 msg: "No existen metodos",
             });
         }
@@ -55,7 +70,7 @@ const consultaMetodosTodosUsuarios = async(req, res) => {
                 $group: {
                     _id: "$idUsuario",
                     metodos: {
-                        $addToSet: { nombre: "$nombreMetodo", esatdo: "$estado" },
+                        $addToSet: { nombre: "$nombreMetodo", online: "$online" },
                     },
                 },
             }, ],
@@ -73,9 +88,9 @@ const consultaMetodosTodosUsuarios = async(req, res) => {
             respuesta: agrupado,
         });
     } catch (error) {
-        return res.status(403).json({
-            msg: "0010",
+        return res.json({
             ok: false,
+            codError: "0010",
             msg: "Error hable con el administrador",
         });
     }
@@ -86,17 +101,19 @@ const darPermisoAccesoMetodo = async(req, res = response) => {
     try {
         const usuarioDB = await Usuario.findOne({ _id: Types.ObjectId(idUsuario) });
         if (!usuarioDB || usuarioDB.length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0002",
                 msg: "Usuario no encontrado",
             });
         }
         const registroMetodosBDD = RegistroMetodos.find({ URL: nombreMetodo });
-        console.log("registro metods BDD ->", registroMetodosBDD);
+        // console.log("registro metods BDD ->", registroMetodosBDD);
 
         if (!registroMetodosBDD || (await registroMetodosBDD).length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0010",
                 msg: `La ruta ${nombreMetodo} no se encuentra en los registros`,
             });
         }
@@ -108,18 +125,20 @@ const darPermisoAccesoMetodo = async(req, res = response) => {
             await metodo.save();
             return res.json({
                 ok: true,
+                codError: "0001",
                 msg: `Se concedió acceso a ${usuarioDB.email} a la ruta ${nombreMetodo}`,
                 metodo,
             });
         }
-        res.status(400).json({
+        res.json({
             ok: false,
+            codError: "0010",
             msg: `El usuario ${usuarioDB.email} ya tiene asignado el metodo:${nombreMetodo}`,
         });
     } catch (error) {
-        // console.log(error);
-        return res.status(500).json({
+        return res.json({
             ok: false,
+            codError: "999",
             msg: "Hable con el administrador",
         });
     }
@@ -135,18 +154,21 @@ const ingresarNuevoMetodo = async(req, res = response) => {
             await metodo.save();
             return res.json({
                 ok: true,
+                codError: "0001",
                 msg: `La ruta ${URL} se guardo con exito`,
                 metodo,
             });
         }
-        res.status(400).json({
+        res.json({
             ok: false,
+            codError: "0002",
             msg: `La ruta ${URL} ya se encuentra registrada`,
         });
 
     } catch (error) {
-        res.status(500).json({
+        res.json({
             ok: false,
+            codError: "999",
             msg: "Hable con el administrador",
         });
     }
@@ -156,21 +178,22 @@ const consultarRegistroMetodos = async(req, res = response) => {
     try {
         const registroMetodosBDD = await RegistroMetodos.find();
         if (!registroMetodosBDD || registroMetodosBDD.length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0002",
                 msg: "No existen registros de metodos",
             });
         }
         res.json({
             ok: true,
+            codError: "0001",
             registroMetodosBDD
         });
     } catch (error) {
-        return res.status(403).json({
-            msg: "0010",
+        return res.json({
+            codError: "999",
             ok: false,
             msg: "Error hable con el administrador",
-            error,
         });
     }
 }
@@ -181,28 +204,32 @@ const actualizarEstadoMetodo = async(req, res = response) => {
         let data = req.body;
         const metodoDB = await Metodo.findOne({ _id: Types.ObjectId(idMetodo) });
         if (!metodoDB || metodoDB.length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0002",
                 msg: "Ruta no encontrada",
             });
         }
-        let body = _.pick(data, ['nombreMetodo', 'estado']);
+        let body = _.pick(data, ['nombreMetodo', 'online']);
         delete body.nombreMetodo;
         const metodoUpdateBDD = await Metodo.findByIdAndUpdate(idMetodo, body, { new: true, runValidators: true, context: 'query' });
         if (!metodoUpdateBDD || metodoUpdateBDD.length == 0) {
-            return res.status(400).json({
+            return res.json({
                 ok: false,
+                codError: "0010",
                 msg: "Ocurrio un error al guardar en la base",
             });
         }
         res.json({
             ok: true,
+            codError: "0001",
             msg: `Se actualizo los datos`,
             metodoUpdateBDD,
         });
     } catch (error) {
-        return res.status(500).json({
+        return res.json({
             ok: false,
+            codError: "999",
             msg: "Hable con el administrador",
         });
     }
@@ -214,27 +241,31 @@ const actualizarEstadoRegistroRutas = async(req, res = response) => {
         let data = req.body;
         const registroRutaBDD = await RegistroMetodos.findOne({ _id: Types.ObjectId(idRegistroRuta) });
         if (!registroRutaBDD || registroRutaBDD.length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0002",
                 msg: "Ruta no encontrada",
             });
         }
-        let body = _.pick(data, ['nombre', 'descripcion', 'observacion', 'URL', 'estadoRM']);
+        let body = _.pick(data, ['nombre', 'descripcion', 'observacion', 'URL', 'online']);
         const registroBDD = await RegistroMetodos.findByIdAndUpdate(idRegistroRuta, body, { new: true, runValidators: true, context: 'query' });
         if (!registroBDD || registroBDD.length == 0) {
-            return res.status(400).json({
+            return res.json({
                 ok: false,
+                codError: "0002",
                 msg: "Ocurrio un error al guardar en la base",
             });
         }
         res.json({
             ok: true,
+            codError: "0001",
             msg: `Se actualizo los datos`,
             registroBDD,
         });
     } catch (error) {
-        return res.status(500).json({
+        return res.json({
             ok: false,
+            codError: "999",
             msg: "Hable con el administrador",
         });
     }

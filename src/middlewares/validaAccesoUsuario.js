@@ -18,8 +18,9 @@ const validaAccesoUsuario = async(req, res, next) => {
         const usuarioDB = await Usuario.findOne({ _id: Types.ObjectId(usuarioREQ) });
         // console.log(usuarioDB);
         if (!usuarioDB.online) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0001",
                 msg: `El usuario ${usuarioDB.email} se encuentra inactivo`
             });
         }
@@ -27,24 +28,26 @@ const validaAccesoUsuario = async(req, res, next) => {
         const metodoBDD = await Metodo.find({ idUsuario: Types.ObjectId(usuarioREQ), nombreMetodo, estado: true });
         // console.log(`Nombre metodo que llega en JWT:${nombreMetodo} usuario:${usuarioREQ}`);
         // console.log("Busqueda de la bdd si tiene acceso-->", metodoBDD);
-        const registroMetodoBDD = await RegistroMetodos.find({ URL: nombreMetodo, estadoRM: true });
+        const registroMetodoBDD = await RegistroMetodos.find({ URL: nombreMetodo, online: true });
         // console.log("Consulta registro-->", registroMetodoBDD);
         if (!metodoBDD || metodoBDD.length == 0) {
-            return res.status(404).json({
+            return res.json({
+                codError: "0001",
                 ok: false,
                 msg: "Usuario no tiene acceso a la ruta",
             });
         } else if (!registroMetodoBDD || registroMetodoBDD.length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0001",
                 msg: "La ruta se encuentra inactiva",
             });
         } else {
             next();
         }
     } catch (error) {
-        return res.status(403).json({
-            msg: "0010",
+        return res.json({
+            codError: "999",
             ok: false,
             msg: "Usuario no valido",
             error

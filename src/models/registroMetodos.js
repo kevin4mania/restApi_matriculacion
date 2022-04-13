@@ -1,15 +1,15 @@
 const { Schema, model } = require("mongoose");
 
 const RegistroMetodoSchema = Schema({
-    nombre: {
+    name: {
         type: String,
         require: true,
     },
-    descripcion: {
+    description: {
         type: String,
         required: true,
     },
-    observacion: {
+    observation: {
         type: String,
         required: true,
     },
@@ -17,7 +17,7 @@ const RegistroMetodoSchema = Schema({
         type: String,
         required: true,
     },
-    estadoRM: {
+    online: {
         type: Boolean,
         default: true,
     },

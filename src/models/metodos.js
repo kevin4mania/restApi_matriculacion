@@ -11,14 +11,14 @@ const MetodoSchema = Schema({
         required: true,
         // unique: true,
     },
-    estado: {
+    online: {
         type: Boolean,
         default: true,
     },
 });
 
 MetodoSchema.method('toJSON', function() {
-    const { __v, _id, ...object } = this.toObject();
+    const { __v, ...object } = this.toObject();
     return object;
 })
 

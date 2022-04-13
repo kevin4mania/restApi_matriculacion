@@ -4,8 +4,9 @@ const config = require('../configs/config');
 const validarJWT = (req, res, next) => {
     const token = req.header('x-token');
     if (!token) {
-        return res.status(401).json({
+        return res.json({
             ok: false,
+            codError: "0002",
             msg: 'No hay token en la petición'
         });
     }
@@ -16,8 +17,8 @@ const validarJWT = (req, res, next) => {
         // console.log("TOKEN ***>", jwt.verify(token, config.JWT_KEY));
         next();
     } catch (error) {
-        return res.status(403).json({
-            msg: '0010',
+        return res.json({
+            codError: "999",
             ok: false,
             msg: 'Token no válido'
         })

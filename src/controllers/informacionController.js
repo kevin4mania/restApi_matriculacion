@@ -105,35 +105,31 @@ const descripccionMetodos = async(req, res) => {
 
 const accesoMetodos = async(req, res) => {
     try {
-        // const { idUsuario } = req.params;
         const usuarioREQ = req.usuario;
         const usuarioBDD = await Usuario.find({ _id: Types.ObjectId(usuarioREQ) });
-        // console.log("usuario->", usuarioBDD);
-        // console.log(req);
-        // console.log("IdUsuario--><<<", usuarioREQ);
-        // console.log({ idUsuario: Types.ObjectId(idUsuario), estado: true });
         const metodoBDD = await Metodo.find({
             idUsuario: Types.ObjectId(usuarioREQ),
             estado: true,
         });
         if (!metodoBDD || metodoBDD.length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0001",
                 msg: "Usuario no tiene metodos asignados",
             });
         }
-        console.log("Metodo USBD->", metodoBDD);
+        // console.log("Metodo USBD->", metodoBDD);
         res.json({
+            codError: "0001",
             ok: true,
             usuario: { nombre: usuarioBDD[0].nombre, email: usuarioBDD[0].email },
             metodosAcceso: metodoBDD,
         });
     } catch (error) {
-        return res.status(403).json({
-            msg: "0010",
+        return res.json({
+            codError: "0001",
             ok: false,
             msg: "Error hable con el administrador",
-            error,
         });
     }
 };

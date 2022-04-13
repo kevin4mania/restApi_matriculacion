@@ -11,7 +11,7 @@ const {
     ingresarNuevoMetodo,
     consultarRegistroMetodos,
     actualizarEstadoMetodo,
-    actualizarEstadoRegistroRutas
+    actualizarEstadoRegistroRutas,
 } = require("../controllers/metodosController.js");
 
 const router = Router();
@@ -40,9 +40,13 @@ router.post(
 //**Ingresar nuevos metodos  */
 router.post(
     "/ingresaNuevoMetodo", [
-        check("nombre", "El nombre de la ruta es obligatorio").not().isEmpty(),
-        check("descripcion", "La descripcion de la ruta es obligatoria").not().isEmpty(),
-        check("observacion", "La observacion de la ruta es obligatoria").not().isEmpty(),
+        check("name", "El nombre de la ruta es obligatorio").not().isEmpty(),
+        check("description", "La descripcion de la ruta es obligatoria")
+        .not()
+        .isEmpty(),
+        check("observation", "La observacion de la ruta es obligatoria")
+        .not()
+        .isEmpty(),
         check("URL", "El URL es obligatorio").not().isEmpty(),
         validarJWT,
         validarCampos,
@@ -51,11 +55,14 @@ router.post(
     ingresarNuevoMetodo
 );
 
-router.get("/consultaRegistrosMetodos", [validarJWT, validaAccesoUsuario], consultarRegistroMetodos);
+router.get(
+    "/consultaRegistrosMetodos", [validarJWT, validaAccesoUsuario],
+    consultarRegistroMetodos
+);
 router.put(
     "/actualizaMetodo", [
         check("idMetodo", "El id metodo es obligatorio").not().isEmpty(),
-        check("estado", "El estado es obligatorio").not().isEmpty(),
+        check("online", "El estado es obligatorio").not().isEmpty(),
         validarJWT,
         validarCampos,
         validaAccesoUsuario,
@@ -64,13 +71,25 @@ router.put(
 );
 router.put(
     "/actualizarEstadoRegistroRuta", [
-        check("idRegistroRuta", "El id del registro es obligatorio").not().isEmpty(),
-        check("estadoRM", "El estado del registro es obligatorio").not().isEmpty(),
+        check("idRegistroRuta", "El id del registro es obligatorio")
+        .not()
+        .isEmpty(),
+        check("online", "El estado del registro es obligatorio").not().isEmpty(),
         validarJWT,
         validarCampos,
         validaAccesoUsuario,
     ],
     actualizarEstadoRegistroRutas
 );
+
+const RegistroMetodos = require("../models/registroMetodos");
+const Metodos = require("../models/metodos");
+
+router.get("/MODELO", async(req, res) => {
+    const modelo = await Metodos.updateMany({}, { $rename: { estado: "online" } });
+    res.json({
+        modelo,
+    });
+});
 
 module.exports = router;

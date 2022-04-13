@@ -14,7 +14,8 @@ const crearUsuario = async(req, res = response) => {
     try {
         const existeEmail = await Usuario.findOne({ email });
         if (existeEmail) {
-            return res.status(200).json({
+            return res.json({
+                codError: "0010",
                 ok: false,
                 msg: "El correo ya está registrado",
             });
@@ -33,12 +34,14 @@ const crearUsuario = async(req, res = response) => {
 
         res.json({
             ok: true,
+            codError: "0001",
             usuario,
             token,
         });
     } catch (error) {
         res.status(500).json({
             ok: false,
+            codError: "999",
             msg: "Hable con el administrador",
         });
     }
@@ -51,13 +54,15 @@ const login = async(req, res = response) => {
         if (!usuarioDB) {
             return res.json({
                 ok: false,
+                codError: "0010",
                 msg: "Credenciales incorrectas",
             });
         }
         // console.log(usuarioDB);
         if (!usuarioDB.online) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0002",
                 msg: `El usuario ${usuarioDB.email} se encuentra inactivo`
             });
         }
@@ -65,20 +70,23 @@ const login = async(req, res = response) => {
         if (!validPassword) {
             return res.json({
                 ok: false,
-                msg: "La contraseña no es valida",
+                codError: "0010",
+                msg: "Credenciales incorrectas",
             });
         }
         const token = await generarJWT(usuarioDB);
 
         res.json({
             ok: true,
+            codError: "0001",
             usuario: usuarioDB,
             token,
         });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({
+        // console.log(error);
+        return res.json({
             ok: false,
+            codError: "999",
             msg: "Hable con el administrador",
         });
     }
@@ -88,19 +96,22 @@ const consultarUsuarios = async(req, res = response) => {
     try {
         const usuarioDB = await Usuario.find();
         if (!usuarioDB || usuarioDB.length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0010",
                 msg: "No existen usuarios",
             });
         }
         res.json({
             ok: true,
+            codError: "0001",
             usuarios: usuarioDB,
         });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({
+        return res.json({
             ok: false,
+            codError: "999",
             msg: "Hable con el administrador",
         });
     }
@@ -112,8 +123,9 @@ const actualizarEstadoUsuario = async(req, res = response) => {
         let data = req.body;
         const usuarioDB = await Usuario.findOne({ _id: Types.ObjectId(idUsuario) });
         if (!usuarioDB || usuarioDB.length == 0) {
-            return res.status(404).json({
+            return res.json({
                 ok: false,
+                codError: "0010",
                 msg: "Usuario no encontrado",
             });
         }
@@ -131,85 +143,34 @@ const actualizarEstadoUsuario = async(req, res = response) => {
         const userUpdateBDD = await Usuario.findByIdAndUpdate(idUsuario, body, { new: true, runValidators: true, context: 'query' });
         // console.log("actualizacion del usuario", userUpdateBDD);
         if (!userUpdateBDD || userUpdateBDD.length == 0) {
-            return res.status(400).json({
+            return res.json({
                 ok: false,
+                codError: "0002",
                 msg: "Ocurrio un error al guardar en la base",
             });
         }
 
         res.json({
             ok: true,
+            codError: "0001",
             msg: `Se actualizo los datos del usuario`,
             userUpdateBDD,
         });
 
     } catch (error) {
-        return res.status(500).json({
+        return res.json({
             ok: false,
+            codError: "999",
             msg: "Hable con el administrador",
         });
     }
 }
-const loginPrueba = async(req, res = response) => {
-    // const { email, password } = req.body;
-    try {
-        // const usuarioDB = await Usuario.findOne({ email });
-        // if (!usuarioDB) {
-        //     return res.status(404).json({
-        //         ok: false,
-        //         msg: "Credenciales incorrectas",
-        //     });
-        // }
-        // if (!usuarioDB.online) {
-        //     return res.status(404).json({
-        //         ok: false,
-        //         msg: `El usuario ${usuarioDB.nombre} se encuentra inactivo`
-        //     });
-        // }
-        // const validPassword = bcrypt.compareSync(password, usuarioDB.password);
-        // if (!validPassword) {
-        //     return res.status(400).json({
-        //         ok: false,
-        //         msg: "La contraseña no es valida",
-        //     });
-        // }
-        const token = await generarJWT(req.body);
 
-        res.json({
-            ok: true,
-            usuario: "",
-            token,
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            ok: false,
-            msg: "Hable con el administrador",
-        });
-    }
-};
-/* 
-const renewToken = async(req, res = response) => {
-    const uid = req.uid;
-
-    // generar un nuevo JWT, generarJWT... uid...
-    const token = await generarJWT(uid);
-
-    // Obtener el usuario por el UID, Usuario.findById...
-    const usuario = await Usuario.findById(uid);
-
-    res.json({
-        ok: true,
-        usuario,
-        token,
-    });
-};
- */
 module.exports = {
     crearUsuario,
     login,
     // renewToken,
     consultarUsuarios,
     actualizarEstadoUsuario,
-    loginPrueba
+    // loginPrueba
 };
