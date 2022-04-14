@@ -20,7 +20,7 @@ const validaAccesoUsuario = async(req, res, next) => {
         if (!usuarioDB.online) {
             return res.json({
                 ok: false,
-                codError: "0001",
+                codError: "0002",
                 msg: `El usuario ${usuarioDB.email} se encuentra inactivo`
             });
         }
@@ -32,14 +32,14 @@ const validaAccesoUsuario = async(req, res, next) => {
         // console.log("Consulta registro-->", registroMetodoBDD);
         if (!metodoBDD || metodoBDD.length == 0) {
             return res.json({
-                codError: "0001",
+                codError: "0002",
                 ok: false,
                 msg: "Usuario no tiene acceso a la ruta",
             });
         } else if (!registroMetodoBDD || registroMetodoBDD.length == 0) {
             return res.json({
                 ok: false,
-                codError: "0001",
+                codError: "0002",
                 msg: "La ruta se encuentra inactiva",
             });
         } else {

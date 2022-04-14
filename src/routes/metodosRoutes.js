@@ -12,6 +12,8 @@ const {
     consultarRegistroMetodos,
     actualizarEstadoMetodo,
     actualizarEstadoRegistroRutas,
+    consultaMetodosNoAccesoPorUsuario,
+    darPermisoAccesoMetodos
 } = require("../controllers/metodosController.js");
 
 const router = Router();
@@ -19,6 +21,10 @@ const router = Router();
 router.get(
     "/consultaMetodosPorUsuario/:IdUsuario", [validarJWT, validaAccesoUsuario],
     consultaMetodosPorUsuario
+);
+router.get(
+    "/consultaMetodosNoAccesoPorUsuario/:IdUsuario", [validarJWT, validaAccesoUsuario],
+    consultaMetodosNoAccesoPorUsuario
 );
 router.get(
     "/consultaMetodosTodosUsuarios", [validarJWT, validaAccesoUsuario],
@@ -35,6 +41,18 @@ router.post(
         validaAccesoUsuario,
     ],
     darPermisoAccesoMetodo
+);
+router.post(
+    "/darPermisoAccesoMetodos", [
+        check("idUsuario", "El id del usuario es obligatorio").not().isEmpty(),
+        // check("nombreMetodo", "El nombre del metodo es obligatorio")
+        // .not()
+        // .isEmpty(),
+        validarJWT,
+        validarCampos,
+        validaAccesoUsuario,
+    ],
+    darPermisoAccesoMetodos
 );
 
 //**Ingresar nuevos metodos  */
@@ -81,6 +99,7 @@ router.put(
     ],
     actualizarEstadoRegistroRutas
 );
+
 
 const RegistroMetodos = require("../models/registroMetodos");
 const Metodos = require("../models/metodos");
