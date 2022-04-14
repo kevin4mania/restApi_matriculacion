@@ -108,7 +108,7 @@ const consultarUsuarios = async(req, res = response) => {
             usuarios: usuarioDB,
         });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return res.json({
             ok: false,
             codError: "999",

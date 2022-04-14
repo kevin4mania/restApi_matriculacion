@@ -30,13 +30,14 @@ const consultaMetodosPorUsuario = async(req, res) => {
         let arrMetodo = [];
         for (let metodo of metodoBDD) {
             let registroMetodosBDD = await RegistroMetodos.findOne({ URL: metodo.nombreMetodo });
-            console.log(registroMetodosBDD);
+            // console.log("POR USUARIO",registroMetodosBDD);
             arrMetodo.push({
                 name: registroMetodosBDD.name,
                 description: registroMetodosBDD.description,
                 observation: registroMetodosBDD.observation,
                 URL: metodo.nombreMetodo,
-                online: metodo.online
+                online: metodo.online,
+                id: metodo._id
             });
         }
         res.json({
@@ -84,7 +85,8 @@ const consultaMetodosNoAccesoPorUsuario = async(req, res) => {
                 description: registroMetodosBDD.description,
                 observation: registroMetodosBDD.observation,
                 URL: metodo.nombreMetodo,
-                online: metodo.online
+                online: metodo.online,
+                id: metodo._id
             });
         }
         res.json({
