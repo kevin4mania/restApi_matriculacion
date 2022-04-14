@@ -28,7 +28,9 @@ const consultaMetodosPorUsuario = async(req, res) => {
             });
         }
         let arrMetodo = [];
+        let i = 0;
         for (let metodo of metodoBDD) {
+            i++;
             let registroMetodosBDD = await RegistroMetodos.findOne({ URL: metodo.nombreMetodo });
             // console.log("POR USUARIO",registroMetodosBDD);
             arrMetodo.push({
@@ -44,6 +46,7 @@ const consultaMetodosPorUsuario = async(req, res) => {
             ok: true,
             codError: "0001",
             usuario: usuarioBDD[0].email,
+            cantidad: i,
             metodosAcceso: arrMetodo,
         });
     } catch (error) {
@@ -66,34 +69,47 @@ const consultaMetodosNoAccesoPorUsuario = async(req, res) => {
             });
         }
         const metodoBDD = await Metodo.find({
-            idUsuario: { $ne: Types.ObjectId(IdUsuario) }
+            // idUsuario: { $ne: Types.ObjectId(IdUsuario) }
+            idUsuario: Types.ObjectId(IdUsuario)
         });
-        if (!metodoBDD || metodoBDD.length == 0) {
-            return res.json({
-                ok: false,
-                codError: "0002",
-                usuario: usuarioBDD[0].email,
-                msg: "Usuario no tiene metodos asignados",
-            });
+        // if (!metodoBDD || metodoBDD.length == 0) {
+        //     return res.json({
+        //         ok: false,
+        //         codError: "0002",
+        //         usuario: usuarioBDD[0].email,
+        //         msg: "Usuario no tiene metodos asignados",
+        //     });
+        // }
+        // console.log("RESPUESTAMETODO->", metodoBDD);
+        let nombreMetodos = [];
+        for (let n of metodoBDD) {
+            nombreMetodos.push(n.nombreMetodo)
         }
-        let arrMetodo = [];
-        for (let metodo of metodoBDD) {
-            let registroMetodosBDD = await RegistroMetodos.findOne({ URL: metodo.nombreMetodo });
-            // console.log(registroMetodosBDD);
-            arrMetodo.push({
-                name: registroMetodosBDD.name,
-                description: registroMetodosBDD.description,
-                observation: registroMetodosBDD.observation,
-                URL: metodo.nombreMetodo,
-                online: metodo.online,
-                id: metodo._id
-            });
-        }
+        console.log("NOMBRES-->", nombreMetodos);
+        // db.gustos.find({aficiones:{'$nin':["correr","viajar"]}},{nombre:true,"_id":false})
+        let registroMetodosBDD2 = await RegistroMetodos.find({ URL: { $nin: nombreMetodos } });
+        // console.log("METODOS QUE NO ESTAN==>", registroMetodosBDD2);
+        // let arrMetodo = [];
+        // let i = 0;
+        // for (let metodo of metodoBDD) {
+        //     i++
+        //     let registroMetodosBDD = await RegistroMetodos.findOne({ URL: metodo.nombreMetodo });
+        //     // console.log(registroMetodosBDD);
+        //     arrMetodo.push({
+        //         name: registroMetodosBDD.name,
+        //         description: registroMetodosBDD.description,
+        //         observation: registroMetodosBDD.observation,
+        //         URL: metodo.nombreMetodo,
+        //         online: metodo.online,
+        //         id: metodo._id
+        //     });
+        // }
         res.json({
             ok: true,
             codError: "0001",
             usuario: usuarioBDD[0].email,
-            metodosSinAcceso: arrMetodo,
+            cantidad: registroMetodosBDD2.length,
+            metodosSinAcceso: registroMetodosBDD2,
         });
     } catch (error) {
         return res.json({
